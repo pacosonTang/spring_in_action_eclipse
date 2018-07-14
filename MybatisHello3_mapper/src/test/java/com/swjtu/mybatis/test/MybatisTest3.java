@@ -19,7 +19,7 @@ import com.swjtu.mybatis.dao.EmployeeMapper;
 import com.swjtu.mybatis.dao.EmployeeMapperAnnotation;
 import com.swjtu.mybatis.dao.EmployeeMapperPlus;
 
-public class MybatisTest1 {
+public class MybatisTest3 {
 	
 	/**
 	 *  根据部门id 查询员工列表

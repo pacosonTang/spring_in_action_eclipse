@@ -15,8 +15,6 @@ public interface EmployeeMapper {
 	@MapKey("LASTNAME") 
 	public Map<String, Employee> getEmpByLastNameLikeReturnMap(String lastName);
 	
-	
-	
 	// 把查询结果封装到List<Map>
 	public List<Map<String, Object>> getEmpListByLastNameReturnListMap(String lastName);
 	

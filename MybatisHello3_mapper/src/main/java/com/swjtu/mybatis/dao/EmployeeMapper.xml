@@ -61,7 +61,7 @@ public Employee getEmpById(Integer id);
 		       , email AS EMAIL
 		       , gender AS GENDER
 		  FROM emp_tbl 
-		 WHERE id = #{abc}
+		 WHERE id = #{aabcdefg}
 	</select>
 	
 	<!-- 添加一个员工  public void addEmp(Employee e);  -->
@@ -120,16 +120,6 @@ public Employee getEmpById(Integer id);
 		 WHERE id = ${ID}
 		   and last_name = #{LAST_NAME}
 	</select>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
