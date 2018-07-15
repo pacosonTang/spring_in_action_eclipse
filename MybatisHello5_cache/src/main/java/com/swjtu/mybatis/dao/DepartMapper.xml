@@ -4,19 +4,13 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.swjtu.mybatis.dao.DepartMapper">
 	
-	<cache></cache>
+	<cache-ref namespace="com.swjtu.mybatis.dao.EmployeeMapper"/>
 	
 	<resultMap type="dept" id="deptMap">
 		<result column="ID" property="id"/>
 		<result column="DEPT_NAME" property="deptName"/>		
 	</resultMap>
-	<!-- public Department getDeptById(Integer id); -->
-	<select id="getDeptById" resultMap="deptMap">
-		SELECT id AS ID
-		       , dept_name AS DEPT_NAME
-		  FROM dept_tbl
-		 WHERE id = #{ID}     
-	</select>	
+	
 	
 	<!-- 查询部门及其员工列表的sql实现 -->
 	<!-- collection 定义集合 -->
@@ -77,9 +71,27 @@
 		将多列的值封装到map并传递map过去；如 column="{key1=column1, key2=column2}"；
 		2： collection 标签有属性 fetchType 加载类型： lazy 延迟加载或 eager 立即加载
 	 -->
+	 
+	 <!-- * 通过id查询部门 */ 
+	 public Department getDeptById(Integer id); -->
+	<select id="getDeptById" resultMap="deptMap"
+	 	    flushCache="false">
+		SELECT id AS ID
+		       , dept_name AS DEPT_NAME
+		  FROM dept_tbl
+		 WHERE id = #{ID}     
+	</select>	
 	
-	
-	
+	<!-- /* 添加一个部门 */
+	public Department addDept(Integer id, String deptName); -->
+	<insert id="addDept">
+		INSERT 
+		  INTO dept_tbl 
+		       ( dept_name
+	           ) 
+        VALUES ( #{deptName}
+               )
+	</insert>
 	
 	
 	

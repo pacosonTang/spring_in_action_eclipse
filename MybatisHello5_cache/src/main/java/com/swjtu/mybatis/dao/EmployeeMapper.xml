@@ -3,9 +3,19 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.swjtu.mybatis.dao.EmployeeMapper">
-	<!-- 配置二级缓存 -->
+	
+	<!--  配置 EhcacheCache 作为二级缓存，与可以配置参数 -->
+	 <cache type="org.mybatis.caches.ehcache.EhcacheCache">
+	 	<property name="timeToIdleSeconds" value="3600"/><!--1 hour-->
+	    <property name="timeToLiveSeconds" value="3600"/><!--1 hour-->
+	    <property name="maxEntriesLocalHeap" value="1000"/>
+	    <property name="maxEntriesLocalDisk" value="10000000"/>
+	    <property name="memoryStoreEvictionPolicy" value="LRU"/>
+	 </cache>
+	<!-- 配置二级缓存 
 	<cache eviction="FIFO" flushInterval="6000" readOnly="false" 
 			size="1024" ></cache>
+			-->
 	<!-- 
 	eviction:缓存的回收策略：
 		• LRU – 最近最少使用的：移除最长时间不被使用的对象。
@@ -77,7 +87,7 @@ public Employee getEmpById(Integer id);
 		 WHERE last_name like #{lastName}
  	</select>	
  
-	<select id="getEmployeeId" resultType="emp">
+	<select id="getEmployeeId" resultType="emp" useCache="false">
 		SELECT id AS ID
 		       , last_name AS LASTNAME
 		       , email AS EMAIL

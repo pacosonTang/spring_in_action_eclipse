@@ -17,6 +17,40 @@ import com.swjtu.mybatis.dao.EmployeeMapper;
 public class MybatisTest5 {
 	
 	/**
+	 * 测试二级缓存(增删改sql标签 属性 flushCache 清空缓存)
+	 * 一旦清空缓存，就要发送两条sql。
+	 */
+	@Test
+	public void testSecondLevelCacheFlushCache() {
+		SqlSessionFactory factory = this.getSqlSessionFactory();
+		SqlSession session1 = factory.openSession();
+		SqlSession session2 = factory.openSession();
+		
+		try {
+			DepartMapper mapper1 = session1.getMapper(DepartMapper.class);
+			// 第1次查询，使用session
+			Department d1 = mapper1.getDeptById(1); 
+			System.out.println(d1);
+			System.out.println("===============================================");
+			
+			// 第2次查询前，新增一个部门
+			/*int insertRows = mapper1.addDept("大数据实验室");
+			System.out.println("insertRows = " + insertRows);*/
+			session1.clearCache(); // 清除session1的本地缓存
+			session1.close();
+			
+			// 第2次查询，使用session2
+			// 开启了二级缓存，则第2次查询是从二级缓存中拿到的数据，并没有从数据库查询。
+			DepartMapper mapper2 = session2.getMapper(DepartMapper.class);
+			Department d2 = mapper2.getDeptById(1); 
+			System.out.println(d2);
+			System.out.println(d1 == d2);
+		} finally {
+			session2.close(); // 关闭第2个session
+		}
+	}
+	
+	/**
 	 * 测试二级缓存(mapper.xml 中没有配置二级缓存)
 	 * 没有配置二级缓存或全局缓存，就要发送2条sql
 	 */
@@ -76,7 +110,17 @@ public class MybatisTest5 {
 	 * 						如果flushCache=true;每次查询之后都会清空缓存；缓存是没有被使用的；
 	 * 			4）、sqlSession.clearCache();只是清楚当前session的一级缓存；
 	 * 			5）、localCacheScope：本地缓存作用域：（一级缓存SESSION）；当前会话的所有数据保存在会话缓存中；
-	 * 								STATEMENT：可以禁用一级缓存；		
+	 * 								STATEMENT：可以禁用一级缓存；
+	 * 
+	 * 
+	 *  *第三方缓存整合：
+	 *		1）、导入第三方缓存包即可；
+	 *		2）、导入与第三方缓存整合的适配包；官方有；
+	 *		3）、mapper.xml中使用自定义缓存
+	 *		<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+	 *
+	 * @throws IOException 
+	 * 		
 	 */
 	/**
 	 * 测试二级缓存

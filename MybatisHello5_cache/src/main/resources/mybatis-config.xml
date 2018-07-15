@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	 	<setting name="lazyLoadingEnabled" value="true"/>
 	 	<!-- 侵入型懒加载 -->
 	 	<setting name="aggressiveLazyLoading" value="false"/>
-	 	<setting name="cacheEnabled" value="false"/>
+	 	<setting name="cacheEnabled" value="true"/>
 	 </settings>
 	 
 	 <!-- 
