@@ -22,13 +22,12 @@
 		</tr>
 		<c:forEach items="${EMP_LIST }" var="emp">
 			<tr>
-				<td>${emp.id} }</td>
-				<td>${emp.lastName} }</td>
-				<td>${emp.email} }</td>
-				<td>${emp.gender} }</td>
+				<td>${emp.id} </td>
+				<td>${emp.lastName}</td>
+				<td>${emp.email}</td>
+				<td>${emp.gender}</td>
 			</tr>
 		</c:forEach>
 	</table>
-	
 </body>
 </html>
