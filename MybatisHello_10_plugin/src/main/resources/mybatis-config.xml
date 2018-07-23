@@ -6,9 +6,13 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	
 	<!-- 注册插件到 mybatis全局配置中 -->
 	<plugins>
+		<!-- 第一个插件 -->
 		<plugin interceptor="com.swjtu.mybatis.dao.MyFirstPlugin">
 			<property name="username" value="root"/>
 			<property name="password" value="123456"/>
+		</plugin>
+		<!-- 第二个插件 -->
+		<plugin interceptor="com.swjtu.mybatis.dao.MySecondPlugin">
 		</plugin>
 	</plugins>
 	
