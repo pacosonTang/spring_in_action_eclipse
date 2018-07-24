@@ -12,6 +12,19 @@ resultType：返回值类型
 public Employee getEmpById(Integer id);
  -->
   
+  
+  <!-- /*统计emp_tbl表主键id的最大值*/
+	public int empCount();  -->
+	<select id="getMaxKey" statementType="CALLABLE" resultType="integer">
+		{
+			call helloworld(
+				#{maxKey, mode=OUT, jdbcType=INTEGER, javaType=ResultSet, resultMap=TestMap}
+			)
+		}
+	</select>
+	
+	</resultMap>
+	
   <!-- /*添加员工*/
 	public int addEmp(Employee e);  -->
   <insert id="addEmp">
@@ -22,10 +35,10 @@ public Employee getEmpById(Integer id);
 		         , email
 		         , dept_id
 		       )  VALUES
-		       ( 'chengdu11'
-		          , 'm'
-		          , '11@qq.com'
-		          , 1
+		       ( #{lastName}
+		          , #{gender}
+		          , #{email}
+		          , #{deptId}
 	            )
 	</insert>
 	

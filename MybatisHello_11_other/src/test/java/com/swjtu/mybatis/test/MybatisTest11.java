@@ -2,7 +2,6 @@ package com.swjtu.mybatis.test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.io.Resources;
@@ -20,27 +19,49 @@ import com.swjtu.mybatis.dao.EmployeeMapper;
 
 public class MybatisTest11 {
 
-
+	
+	/**
+	 * 测试存储过程：分页
+	 * @throws IOException
+	 */
+	@Test
+	public void testProcedure() throws IOException {
+		SqlSessionFactory sqlSessionFactory = this.getSqlSessionFactory();
+		SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH);
+		try { 
+			EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
+			int maxSize = mapper.getMaxKey();
+			System.out.println("调用存储过程统计 emp_tbl表主键最大值： max value = " + maxSize);
+			
+			session.commit();
+		} finally { 
+			session.close();
+		}
+	}
+	
 	/**
 	 * 批量插入员工
 	 * @throws IOException
 	 */
 	@Test
-	public void getEmpListByBatch() throws IOException {
+	public void testBatch() throws IOException {
 		/*获取 sqlSessionFactory 对象*/
 		SqlSessionFactory sqlSessionFactory = this.getSqlSessionFactory();
 		/*获取可以批量执行的 SqlSession 对象*/
 //		SqlSession session = sqlSessionFactory.openSession();
 		SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH);
-		try {
+		long start = System.currentTimeMillis();
+		try { 
 			EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
-			List<Employee> empList = new ArrayList<>();
-			for (int i = 10000; i < 20000; i++) {
+			int startIndex = 30000;
+			for (int i = startIndex; i < startIndex + 10000; i++) { 
 				String gender = i % 2 == 0 ? "f":"m";
-				empList.add(new Employee(null, "dayuan"+i, i+"@qq.com", gender));
+				String deptId =String.valueOf(i % 2 == 0 ? 2 : 1);
+				mapper.addEmp(new Employee(null, "dayuan"+i, i+"@qq.com", gender, deptId));
 			}
-			mapper.
 			session.commit();
+			long end = System.currentTimeMillis();
+			System.out.println("执行时长 = " + (end - start));
 		} finally { 
 			session.close();
 		}

@@ -9,6 +9,9 @@ import com.swjtu.mybatis.bean.Employee;
 /*接口*/
 public interface EmployeeMapper {
 	
+	/*统计emp_tbl表主键id的最大值*/
+	public int getMaxKey(); 
+	
 	/*批量添加员工列表*/
 	public int addEmpListBatch(List<Employee> list);
 	

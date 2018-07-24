@@ -5,7 +5,15 @@ public class Employee {
 	private String lastName;
 	private String email;
 	private String gender;
+	private String deptId;
 	
+	
+	public String getDeptId() {
+		return deptId;
+	}
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -31,11 +39,12 @@ public class Employee {
 		this.gender = gender;
 	}
 	
-	public Employee(Integer id, String lastName, String email, String gender) {
+	public Employee(Integer id, String lastName, String email, String gender, String deptId) {
 		this.id = id;
 		this.lastName = lastName;
 		this.email = email;
 		this.gender = gender;
+		this.deptId = deptId;
 	}
 	
 	public Employee(){}
