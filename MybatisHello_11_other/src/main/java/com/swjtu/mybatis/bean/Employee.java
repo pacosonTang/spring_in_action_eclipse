@@ -6,8 +6,15 @@ public class Employee {
 	private String email;
 	private String gender;
 	private String deptId;
+	private EmpStatus status = EmpStatus.LOGOUT;
 	
 	
+	public EmpStatus getStatus() {
+		return status;
+	}
+	public void setStatus(EmpStatus status) {
+		this.status = status;
+	}
 	public String getDeptId() {
 		return deptId;
 	}

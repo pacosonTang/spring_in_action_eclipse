@@ -14,11 +14,71 @@ import org.junit.Test;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.swjtu.mybatis.bean.EmpStatus;
 import com.swjtu.mybatis.bean.Employee;
+import com.swjtu.mybatis.bean.MaxKey;
 import com.swjtu.mybatis.dao.EmployeeMapper;
 
 public class MybatisTest11 {
 
+	
+	/**
+	 * 查询枚举属性并封装
+	 * Employee类的status属性就是 枚举属性
+	 * @throws IOException
+	 */
+	@Test
+	public void testEnumSelect() throws IOException {
+		SqlSessionFactory sqlSessionFactory = this.getSqlSessionFactory();
+		SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH);
+		try { 
+			EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
+			Employee e = mapper.getEmployeeId(20058);
+			System.out.println("status = " + e.getStatus());
+			// 打印结果： status = LOGOUT
+		} finally { 
+			session.close();
+		}
+	}
+	
+	/**
+	 * mybatis 如何处理枚举类型
+	 * mybaits在处理枚举对象的时候，默认保存的是枚举的名字；TypeHandler， EnumTypeHandler
+	 * 改变：使用另外一种枚举类型处理器 EnumOrdinalTypeHandler, 保存的是枚举的ordinal（序号，从0开始）
+	 * @throws IOException
+	 */
+	@Test
+	public void testEnumInsert() throws IOException {
+		SqlSessionFactory sqlSessionFactory = this.getSqlSessionFactory();
+		SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH);
+		try { 
+			EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
+			int insertRows = mapper.addEmp(new Employee(null, "enum_name4", "enum_email4", "f", "1940"));
+			System.out.println("插入的记录数为 " + insertRows);
+			session.commit();
+		} finally { 
+			session.close();
+		}
+	}
+	
+	/**
+	 * 测试枚举类如何使用
+	 * @throws IOException
+	 */
+	@Test
+	public void testEnumUse() throws IOException {
+		EmpStatus login = EmpStatus.LOGIN;
+		EmpStatus logout = EmpStatus.LOGOUT;
+		
+		System.out.println("ordinal = " + login.ordinal());
+		System.out.println("name = " + login.name());
+		System.out.println("ordinal = " + logout.ordinal());
+		System.out.println("name = " + logout.name());
+		
+		System.out.println("枚举状态码：" + login.getCode());
+		System.out.println("枚举提示消息：" + login.getComment());
+	}
+	
 	
 	/**
 	 * 测试存储过程：分页
@@ -30,8 +90,8 @@ public class MybatisTest11 {
 		SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH);
 		try { 
 			EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
-			int maxSize = mapper.getMaxKey();
-			System.out.println("调用存储过程统计 emp_tbl表主键最大值： max value = " + maxSize);
+			MaxKey key = mapper.getMaxKey();
+			System.out.println("调用存储过程统计 emp_tbl表主键最大值： max value = " + key.getMaxKey());
 			
 			session.commit();
 		} finally { 

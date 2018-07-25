@@ -14,15 +14,19 @@ public Employee getEmpById(Integer id);
   
   
   <!-- /*统计emp_tbl表主键id的最大值*/
-	public int empCount();  -->
-	<select id="getMaxKey" statementType="CALLABLE" resultType="integer">
+	public int empCount();  
+	<select id="getMaxKey" statementType="CALLABLE" parameterType="maxKeyMap">
 		{
 			call helloworld(
-				#{maxKey, mode=OUT, jdbcType=INTEGER, javaType=ResultSet, resultMap=TestMap}
+				#{maxKey, mode=OUT, jdbcType=INTEGER}
 			)
 		}
-	</select>
+	</select>-->
 	
+	<!-- 在resultMap标签中指定类型处理器 typeHandler -->
+	<resultMap type="com.swjtu.mybatis.bean.Employee" id="emp">
+		<result column="id" property="id" />
+		<result column="status" property="status" typeHandler="com.swjtu.mybatis.dao.MyEnumStatusTypeHandler"/>
 	</resultMap>
 	
   <!-- /*添加员工*/
@@ -34,11 +38,13 @@ public Employee getEmpById(Integer id);
 		         , gender
 		         , email
 		         , dept_id
+		         , status
 		       )  VALUES
 		       ( #{lastName}
 		          , #{gender}
 		          , #{email}
 		          , #{deptId}
+		          , #{status} 
 	            )
 	</insert>
 	
@@ -56,6 +62,7 @@ public Employee getEmpById(Integer id);
 		       , last_name AS LASTNAME
 		       , email AS EMAIL
 		       , gender AS GENDER
+		       , status as status
 		  FROM emp_tbl 
 		 WHERE id = #{ID}
 	</select>

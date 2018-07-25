@@ -15,6 +15,21 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<plugin interceptor="com.swjtu.mybatis.dao.MySecondPlugin">
 		</plugin> 
 	</plugins> -->
+	<typeHandlers>
+		<!-- <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="com.swjtu.mybatis.bean.EmpStatus"/> -->
+		<!-- 1、配置自定义的类型处理器 -->
+		<typeHandler handler="com.swjtu.mybatis.dao.MyEnumStatusTypeHandler" javaType="com.swjtu.mybatis.bean.EmpStatus"/>
+		<!-- 2、也可以在处理某个字段的时候告诉mybatis使用哪个类型处理器
+			保存：#{status, typeHandler=}
+			查询：把typeHandler 封装到 resultMap 标签中：如下：
+			<!-- 在resultMap标签中指定类型处理器 typeHandler 
+			<resultMap type="com.swjtu.mybatis.bean.Employee" id="emp">
+				<result column="id" property="id" />
+				<result column="status" property="status" typeHandler="com.swjtu.mybatis.dao.MyEnumStatusTypeHandler"/>
+			</resultMap>
+			注意：如果在参数位置修改TypeHandler，应该保证保存数据和查询数据用的TypeHandler是一样的。
+			-->
+	</typeHandlers>
 	
 	<plugins>
 	    <!-- com.github.pagehelper为PageHelper类所在包名 -->
