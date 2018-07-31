@@ -3,6 +3,7 @@ package com.swjtu.jdbc.test;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
@@ -13,6 +14,43 @@ import com.mysql.jdbc.Driver;
 import com.swjtu.jdbc.utils.JdbcUtil;
 
 public class JdbcTest01 {
+	
+	/**
+	 * ResultSet:结果集，封装了使用 jdbc 进行查询的结果。
+	 * 1、调用 statement.executeQuery(sql) 可以得到结果集；
+	 * 2、ResultSet 返回的实际上就是一张数据表。有一个指针指向数据库表的第一行的前面；
+	 * 可以调用 next() 方法检测是否有下一行。若有则返回true且指针下移，否则返回false。
+	 * 相当于 Iterator.hasNext 和 next 方法的结合体
+	 * 3、当指针定位到一行时，可以通过调用 getXXX(index) 或 getXXX(columnName) 获取每列的值。
+	 * 如：getInt(1), getString("name")
+	 * 4、ResultSet 当然也需要进行关闭。
+	 */
+	@Test
+	public void testResultSet() {
+		// 获取id = 20063 的emp记录并打印
+		String sql = "SELECT id, last_name, gender, email, dept_id, status FROM emp_tbl where dept_id = '2'";
+		Connection conn = null;
+		Statement stat = null;
+		ResultSet rs = null;
+		try {
+			conn = JdbcUtil.getConnection();
+			stat = conn.createStatement();
+			System.out.println("连接=" + conn + "，语句 = " + stat);
+			rs = stat.executeQuery(sql);
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				String lastName = rs.getString(2);
+				String gender = rs.getString(3);
+				String email = rs.getString(4);
+				
+				System.out.println("id=" + id + ", lastName=" + lastName + ", gender = " + gender + ", email = " + email);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.closeStatAndConnAndResultSet(stat, conn, rs);
+		}
+	}
 	
 	/**
 	 * 通用的更新方法：insert, update, delete
@@ -28,7 +66,8 @@ public class JdbcTest01 {
 			// 3.准备删除的sql语句
 //			String sql = "delete from emp_tbl where id = '20064'";
 			// 4.执行插入
-			// 4.1 获取操作sql语句的statement对象； 调用Connection的  createStatement() 方法来获取
+			// 4.1 获取操作sql语句的statement对象； 
+//			调用Connection的  createStatement() 方法来获取
 			stat = conn.createStatement();
 			System.out.println("连接=" + conn + "，语句 = " + stat);
 			// 4.2 调用statement对象的 executeUpdate(sql) 执行sql语句进行插入
