@@ -1,17 +1,117 @@
 package com.swjtu.jdbc.test;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 import org.junit.Test;
 
 import com.mysql.jdbc.Driver;
+import com.swjtu.jdbc.utils.JdbcUtil;
 
 public class JdbcTest01 {
+	
+	/**
+	 * 通用的更新方法：insert, update, delete
+	 * 版本1
+	 * @param sql
+	 */
+	public void updateV1(String sql) {
+		Connection conn = null;
+		Statement stat = null;
+		try {
+			// 1.获取数据库连接
+			conn = JdbcUtil.getConnection();
+			// 3.准备删除的sql语句
+//			String sql = "delete from emp_tbl where id = '20064'";
+			// 4.执行插入
+			// 4.1 获取操作sql语句的statement对象； 调用Connection的  createStatement() 方法来获取
+			stat = conn.createStatement();
+			System.out.println("连接=" + conn + "，语句 = " + stat);
+			// 4.2 调用statement对象的 executeUpdate(sql) 执行sql语句进行插入
+			int deleteRows = stat.executeUpdate(sql);
+			System.out.println("删除记录行数：" + deleteRows);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.closeStatAndConn(stat, conn);
+		}
+	}
+	/**
+	 * 测试delete 删除语句  
+	 */
+	@Test
+	public void testDeleteStatement() {
+		Connection conn = null;
+		Statement stat = null;
+		try {
+			// 1.获取数据库连接
+			conn = getConnectionByDriverManager();
+			// 3.准备删除的sql语句
+			String sql = "delete from emp_tbl where id = '20064'";
+			// 4.执行插入
+			// 4.1 获取操作sql语句的statement对象； 调用Connection的  createStatement() 方法来获取
+			stat = conn.createStatement();
+			System.out.println("连接=" + conn + "，语句 = " + stat);
+			// 4.2 调用statement对象的 executeUpdate(sql) 执行sql语句进行插入
+			int deleteRows = stat.executeUpdate(sql);
+			System.out.println("删除记录行数：" + deleteRows);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (null != stat) {
+				try {
+					stat.close(); // 关闭statement对象
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (null != conn) {
+				try {
+					conn.close(); // 关闭连接
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 向指定的数据表中插入一条记录，
+	 *  1、Statement 用于执行sql语句的对象；
+	 *  1.1、通过 Connection.createStatement() 方法来获取
+	 *  1.2、通过 executeUpdate(sql) 可以执行sql语句
+	 *  1.3、sql语可以是 insert， update 或 delete， 但不能是 select
+	 *  2、Connection， Statement 都是应用程序和数据库服务器的连接资源；使用后一定要关闭
+	 *  （try-catch-finally块中关闭）
+	 *  3、关闭顺序：先关闭后获取的，即先关闭 Statement 后关闭 Connection 
+	 * @throws Exception
+	 */
+	@Test
+	public void testInsertStatement() {
+		Connection conn = null; Statement stat = null;
+		try {
+			// 1.获取数据库连接
+			conn = JdbcUtil.getConnection();
+			// 3.准备插入插入的sql语句
+			String sql = "INSERT INTO emp_tbl(id, last_name, gender, email, dept_id)"
+	                     +"VALUES(null, 'tangrong11', 'm', 'tangrong@qq.com', 1)";
+			// 4.执行插入
+			// 4.1 获取操作sql语句的statement对象； 调用Connection的  createStatement() 方法来获取
+			stat = conn.createStatement();
+			System.out.println("连接=" + conn + "，语句 = " + stat);
+			// 4.2 调用statement对象的 executeUpdate(sql) 执行sql语句进行插入
+			int insertRows = stat.executeUpdate(sql);
+			System.out.println("插入记录行数：" + insertRows);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+		  JdbcUtil.closeStatAndConn(stat, conn);
+		}
+	}
 	
 	@Test
 	public void testGetConnectionByDriverManager() throws Exception {
@@ -21,7 +121,7 @@ public class JdbcTest01 {
 	 * 通过 DriverManager获取 数据库连接 Connection
 	 * @throws Exception 
 	 */
-	public static Connection getConnectionByDriverManager() throws Exception {
+	public Connection getConnectionByDriverManager() throws Exception {
 
 		/*加载数据库配置文件*/
 		InputStream in = JdbcTest01.class.getClassLoader().getResourceAsStream("jdbc.properties");
