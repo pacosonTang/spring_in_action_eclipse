@@ -11,9 +11,67 @@ import java.util.Properties;
 import org.junit.Test;
 
 import com.swjtu.jdbc.bean.Student;
+import com.swjtu.jdbc.bean.User;
 import com.swjtu.jdbc.utils.JdbcUtils;
 
 public class ReviewTest {
+	
+	/**
+	 * 通过预编译sql和反射查询对象实例
+	 */
+	@Test
+	public void getObjByPreparedAndReflection() {
+		String sql = "SELECT user_name AS userName"
+			       + ", password AS password"
+		           + " FROM user_tbl"
+		           + " WHERE rcrd_id = ?";
+		User instance = JdbcTest01.getInstanceByReflection(User.class, sql, 1);
+		if (instance == null) {
+			System.out.println("查无记录");
+		} else {
+			System.out.println(instance);
+		}
+	}
+	
+	
+	/**
+	 * 通过预编译sql语句查询User
+	 */
+	@Test
+	public void getUserByPrepared() {
+		String sql = "SELECT user_name AS USER_NAME"
+			       + ", password AS PASSWORD"
+		           + " FROM user_tbl"
+		           + " WHERE rcrd_id = ?";
+		User user = JdbcTest01.getUser(sql, 1);
+		if (user == null) {
+			System.out.println("查无记录");
+		} else {
+			System.out.println(user);
+		}
+	}
+	
+	/**
+	 * 通过预编译sql语句查询student
+	 */
+	@Test
+	public void getStudentByPrepared() {
+		String sql = "SELECT student_num"
+			       + ", exam_registration_num"
+			       + ", id_card"
+			       + ", name"
+			       + ", age"
+			       + ", grade" 
+			       + ", loc"
+		           + " FROM exam_student_tbl"
+		           + " WHERE rcrd_id = ?";
+		Student stu = JdbcTest01.getStudent(sql, 2);
+		if (stu == null) {
+			System.out.println("查无记录");
+		} else {
+			System.out.println(stu);
+		}
+	}
 	
 	/**
 	 * 使用 PreparedStatement 将有效的解决 SQL 注入问题.

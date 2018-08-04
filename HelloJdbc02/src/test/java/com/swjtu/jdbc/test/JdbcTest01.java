@@ -3,17 +3,142 @@ package com.swjtu.jdbc.test;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.junit.Test;
 
 import com.mysql.jdbc.Driver;
+import com.swjtu.jdbc.bean.Student;
+import com.swjtu.jdbc.bean.User;
 import com.swjtu.jdbc.utils.JdbcUtils;
+import com.swjtu.jdbc.utils.ReflectionUtils;
 
 public class JdbcTest01 {
+	
+	// 将以上两个方法（getUser 和  getStudent）合并为一个方法
+	
+	/**
+	 * 通过预编译sql和反射查询对象实例 
+	 * @param sql
+	 * @param args
+	 * @return
+	 */
+	public static <T> T getInstanceByReflection(Class<T> clazz, String sql, Object... args) {
+		T instance = null;
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet rs = null;
+		try {
+			connection = JdbcUtils.getConnection();
+			preparedStatement = connection.prepareStatement(sql);
+			int i = 1;
+			for (Object arg : args) {
+				preparedStatement.setObject(i++, arg);
+			}
+			/*通过反射创建对象*/
+			instance = clazz.newInstance();
+			/* 查询用户信息 */ 
+			rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				// 得到 ResultSetMetaData 对象
+				ResultSetMetaData metaData = rs.getMetaData();
+				// 打印每一个列名或列别名
+				for (i = 1; i <= metaData.getColumnCount(); i++) {
+					String colLabel = metaData.getColumnLabel(i); // userName 和 password
+					Object colValue = rs.getObject(colLabel); // 列的属性值
+					/*通过反射设置对象instance的属性值*/
+					ReflectionUtils.setFieldValue(instance, colLabel, colValue);  
+				}
+			} 
+			return instance;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtils.closeStatAndConnAndResultSet(preparedStatement, connection, rs);
+		}
+		return instance;
+	}
+	
+	/**
+	 * 通过预编译sql语句查询 User
+	 * @param sql
+	 * @param args
+	 * @return
+	 */
+	public static User getUser(String sql, Object... args) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			connection = JdbcUtils.getConnection();
+			preparedStatement = connection.prepareStatement(sql);
+			int i = 1;
+			for (Object arg : args) {
+				preparedStatement.setObject(i++, arg);
+			}
+			/* 查询用户信息 */ 
+			resultSet = preparedStatement.executeQuery(); 
+			
+			User user = new User();
+			if (resultSet.next()) {
+				user.setUserName(resultSet.getString(1));
+				user.setPassword(resultSet.getString(2));
+				return user;
+			} 
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtils.closeStatAndConnAndResultSet(preparedStatement, connection, resultSet);
+		}
+		return null;
+	}
+	
+	/**
+	 * 通过预编译sql语句查询student
+	 * @param sql
+	 * @param args
+	 * @return
+	 */
+	public static Student getStudent(String sql, Object... args) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			connection = JdbcUtils.getConnection();
+			preparedStatement = connection.prepareStatement(sql);
+			int i = 1;
+			for (Object arg : args) {
+				preparedStatement.setObject(i++, arg);
+			}
+			/*查询学生信息*/
+			resultSet = preparedStatement.executeQuery(); 
+			
+			Student stu = new Student();
+			if (resultSet.next()) {
+				stu.setStudentNum(resultSet.getString(1));
+				stu.setExamRegistrationNum(resultSet.getString(2));
+				stu.setIdCard(resultSet.getString(3));
+				stu.setName(resultSet.getString(4));
+				stu.setAge(resultSet.getInt(5));
+				stu.setGrade(resultSet.getString(6));
+				stu.setLoc(resultSet.getString(7));
+				return stu;
+			} 
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtils.closeStatAndConnAndResultSet(preparedStatement, connection, resultSet);
+		}
+		return null;
+	}
 	
 	/**
 	 * ResultSet:结果集，封装了使用 jdbc 进行查询的结果。
