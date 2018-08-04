@@ -11,7 +11,7 @@ import java.util.Properties;
 import org.junit.Test;
 
 import com.mysql.jdbc.Driver;
-import com.swjtu.jdbc.utils.JdbcUtil;
+import com.swjtu.jdbc.utils.JdbcUtils;
 
 public class JdbcTest01 {
 	
@@ -33,7 +33,7 @@ public class JdbcTest01 {
 		Statement stat = null;
 		ResultSet rs = null;
 		try {
-			conn = JdbcUtil.getConnection();
+			conn = JdbcUtils.getConnection();
 			stat = conn.createStatement();
 			System.out.println("连接=" + conn + "，语句 = " + stat);
 			rs = stat.executeQuery(sql);
@@ -48,7 +48,7 @@ public class JdbcTest01 {
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
-			JdbcUtil.closeStatAndConnAndResultSet(stat, conn, rs);
+			JdbcUtils.closeStatAndConnAndResultSet(stat, conn, rs);
 		}
 	}
 	
@@ -62,7 +62,7 @@ public class JdbcTest01 {
 		Statement stat = null;
 		try {
 			// 1.获取数据库连接
-			conn = JdbcUtil.getConnection();
+			conn = JdbcUtils.getConnection();
 			// 3.准备删除的sql语句
 //			String sql = "delete from emp_tbl where id = '20064'";
 			// 4.执行插入
@@ -76,7 +76,7 @@ public class JdbcTest01 {
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
-			JdbcUtil.closeStatAndConn(stat, conn);
+			JdbcUtils.closeStatAndConn(stat, conn);
 		}
 	}
 	/**
@@ -134,7 +134,7 @@ public class JdbcTest01 {
 		Connection conn = null; Statement stat = null;
 		try {
 			// 1.获取数据库连接
-			conn = JdbcUtil.getConnection();
+			conn = JdbcUtils.getConnection();
 			// 3.准备插入插入的sql语句
 			String sql = "INSERT INTO emp_tbl(id, last_name, gender, email, dept_id)"
 	                     +"VALUES(null, 'tangrong11', 'm', 'tangrong@qq.com', 1)";
@@ -148,7 +148,7 @@ public class JdbcTest01 {
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
-		  JdbcUtil.closeStatAndConn(stat, conn);
+		  JdbcUtils.closeStatAndConn(stat, conn);
 		}
 	}
 	

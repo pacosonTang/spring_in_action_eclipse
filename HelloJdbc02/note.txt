@@ -1,0 +1,4 @@
+1、向数据库表插入一条 Student 记录（）
+1.1、新建一个方法：void addStudent(Student student)
+把参数 student对象插入到数据库中；
+1.2、新建一个  Student 类，对应 student_tbl 考生表；
