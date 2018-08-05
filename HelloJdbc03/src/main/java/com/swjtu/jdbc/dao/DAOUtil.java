@@ -7,6 +7,8 @@ import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 import com.swjtu.jdbc.utils.JdbcUtil;
 import com.swjtu.jdbc.utils.ReflectionUtil;
 
@@ -53,7 +55,8 @@ public class DAOUtil {
 				for (i = 0; i < metaData.getColumnCount(); i++) {
 					String label = metaData.getColumnLabel(i+1);
 					Object value = rs.getObject(label);
-					ReflectionUtil.setFieldValue(instance, label, value);
+//					ReflectionUtil.setFieldValue(instance, label, value); // 使用反射为字段赋值
+					BeanUtils.setProperty(instance, label, value); // 使用 beanutils 为 对象的某字段赋值 
 				}
 			}
 			return instance;
