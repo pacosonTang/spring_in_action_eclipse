@@ -8,8 +8,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 import org.junit.Test;
@@ -21,6 +19,43 @@ import com.swjtu.jdbc.utils.JdbcUtil;
 import com.swjtu.jdbc.utils.ReflectionUtil;
 
 public class JdbcTest01 {
+	
+	/**
+	 * 通过jdbc取得数据库自动生成的主键
+	 */
+	@Test
+	public void testGetPrimaryKey() {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		try {
+			conn = JdbcUtil.getConnection();
+			String sql = "insert into user_tbl (user_name, password) values(?, ?)";
+			
+			/*取得数据库自动生成的主键*/
+			ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			ps.setObject(1, "tianqi");
+			ps.setObject(2, "tianqi");
+			int updRows = ps.executeUpdate();
+			System.out.println("更新记录行数 = " + updRows);
+			
+			// 通过方法 getGeneratedKeys 返回数据库自动生成的主键列表
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next()) {
+				System.out.println("数据库自动生成的主键 = " + rs.getObject(1));
+			}
+			/* 获取结果集的元数据 */
+			ResultSetMetaData metaData = rs.getMetaData();
+			for (int i = 0; i < metaData.getColumnCount(); i++) {
+				// PreparedStatement.getGeneratedKeys 返回的结果集中只有一列，列名为 GENERATED_KEY
+				System.out.println("数据库自动生成的主键的列名为 = " + metaData.getColumnName(i+1));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.closeStatAndConnAndResultSet(ps, conn, null);
+		}
+	}
 	
 	// 将以上两个方法（getUser 和  getStudent）合并为一个方法
 	
