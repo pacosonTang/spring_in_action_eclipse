@@ -1,0 +1,14 @@
+DAO  data access object 数据访问对象
+
+包含了对数据的 crud操作： create, read, update, delete 等4种操作。
+而不包含任何业务相关的信息。
+
+how： 增删改查方法实现如下：
+void update(Strings sql, Object... args);
+
+// 查询一条记录， 返回对应的对象 
+<T> T get(Class<T> clazz, String sql, Object... args);
+// 查询多条记录， 返回对应的对象集合
+<T> List<T> getForList(Class<T> clazz, String sql, Object... args);
+
+
