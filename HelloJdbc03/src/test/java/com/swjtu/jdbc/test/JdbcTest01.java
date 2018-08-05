@@ -81,8 +81,8 @@ public class JdbcTest01 {
 			String sql = "insert into user_tbl (user_name, password, picture) values(?, ?, ?)";
 			
 			ps = conn.prepareStatement(sql);
-			ps.setObject(1, "house");
-			ps.setObject(2, "house");
+			ps.setObject(1, "tianqi");
+			ps.setObject(2, "tianqi");
 			InputStream is = new BufferedInputStream(new FileInputStream("D:\\temp\\note\\house.jpg"));
 			ps.setBlob(3, is); // 插入 blob 数据类型的字段 
 			int updRows = ps.executeUpdate();

@@ -4,11 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.beanutils.BeanUtils;
 
 import com.swjtu.jdbc.utils.JdbcUtil;
 import com.swjtu.jdbc.utils.ReflectionUtil;
@@ -16,7 +13,7 @@ import com.swjtu.jdbc.utils.ReflectionUtil;
 public class DAOUtil {
 	/*insert update delete 操作都可以包含在里面，
 	且通过 statement.executeUpdate() 来实现；*/
-	public void update(String sql, Object... args) {
+	public int update(String sql, Object... args) {
 		Connection conn = null;
 		PreparedStatement stat = null;
 		
@@ -28,12 +25,13 @@ public class DAOUtil {
 				stat.setObject(i++, arg);
 			}
 			int updRows = stat.executeUpdate();
-			System.out.println("更新的行数 = " + updRows);
+			return updRows;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			JdbcUtil.closeStatAndConnAndResultSet(stat, conn, null);
 		}
+		return 0;
 	}
 	
 	/*查询一条记录*/
