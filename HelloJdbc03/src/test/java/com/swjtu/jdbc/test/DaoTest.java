@@ -7,9 +7,24 @@ import org.junit.Test;
 import com.swjtu.jdbc.bean.User;
 import com.swjtu.jdbc.dao.DAOUtil;
 
+// dao 层的测试用例
 public class DaoTest {
-	
 	DAOUtil dao = new DAOUtil();
+	
+	@Test
+	public void testGetForValueWithSingleField() {
+		/*查询某记录的某个字段值*/
+		String sql = "select user_name as userName, password as password "
+				+ "from user_tbl where rcrd_id = ?";
+		Object obj = dao.getForValueWithSingleField(sql, "2");
+		System.out.println(obj);
+		
+		/*统计记录条数*/
+		sql = "select count(1) from user_tbl where rcrd_id < ?";
+		obj = dao.getForValueWithSingleField(sql, "1000");
+		System.out.println(obj);
+		
+	}
 	
 	/**
 	 * 测试查询单个user的功能
@@ -24,9 +39,6 @@ public class DaoTest {
 			System.out.println(user);
 		}
 	}
-	
-	
-	
 	/**
 	 * 测试查询单个user的功能
 	 */
@@ -38,7 +50,6 @@ public class DaoTest {
 		User user = dao.getSingle(User.class, sql, "3");
 		System.out.println(user);
 	}
-	
 	/**
 	 * 测试插入用户的功能
 	 */
@@ -46,6 +57,8 @@ public class DaoTest {
 	public void testUpdate() {
 		String sql = "insert into user_tbl (user_name, password) values(?, ?)";
 		
-		dao.update(sql, "user3333", "pwd3333");
+		for (int i = 1000; i < 10000; i++) {
+			dao.update(sql, "user" + i, "pwd" + i);
+		}
 	}
 }
