@@ -3,14 +3,39 @@ package com.swjtu.jdbc.test;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Savepoint;
 
 import org.junit.Test;
 
-import com.swjtu.jdbc.dao.DAOUtil;
 import com.swjtu.jdbc.utils.JdbcUtil;
 
 public class TransactionTest {
+	
+	/**
+	 * 测试事务的隔离级别
+	 * 在 jdbc程序中，通过 Connection.setTransactionIsolution()设置事务隔离级别
+	 */
+	@Test
+	public void testTransactionIsolation() {
+		Connection conn = null;
+		try {
+			conn = JdbcUtil.getConnection(); // 获取数据库连接
+			conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ); // 可重复读
+			
+			// 如果没有抛出异常，则提交事务
+			conn.commit();
+			System.out.println("提交成功！！");
+		} catch (Exception e) {
+			try {
+				// 回滚事务
+				conn.rollback();
+				System.out.println("事务回滚。");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			} finally {
+				JdbcUtil.closeStatAndConnAndResultSet(null, conn, null);
+			}
+		} 
+	}
 	
 	/**
 	 * 张三给李四 汇款500元。
@@ -29,6 +54,8 @@ public class TransactionTest {
 		try {
 			conn = JdbcUtil.getConnection(); // 获取数据库连接
 			conn.setAutoCommit(false); // 开始事务 取消自动提交
+			// 设置mysql数据库的事务隔离级别为可重复读
+			conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ); 
 			String sql = "update user_tbl set balance = balance - 500 where user_name = ?";
 			int updRows = this.update(conn, sql, "zhangsan");
 			System.out.println("更新记录行数 = " + updRows);
@@ -47,30 +74,25 @@ public class TransactionTest {
 			try {
 				// 回滚事务
 				conn.rollback();
-				System.out.println("事务回滚。");
+				System.out.println("事务回滚成功。");
 			} catch (SQLException e1) {
 				e1.printStackTrace();
+			} finally {
+				JdbcUtil.closeStatAndConnAndResultSet(null, conn, null);
 			}
 		} 
-		
-		/*String sql = "update user_tbl set balance = balance - 500 where user_name = ?";
-		int updRows = dao.update(sql, "zhangsan");
-		System.out.println("更新行数 = " + updRows);
-		
-		这里会抛异常 异常抛出后 数据如何恢复到以前的状态
-		int i = 10/0;
-		System.out.println(i);
-		
-		sql = "update user_tbl set balance = ? where user_name = ?";
-		updRows = dao.update(sql, "1000", "zhangsan");
-		System.out.println("更新行数 = " + updRows);*/
 	}
-	
+	/**
+	 * 执行update更新操作
+	 * @param conn
+	 * @param sql
+	 * @param args
+	 * @return
+	 */
 	public int update(Connection conn, String sql, Object... args) {
 		PreparedStatement stat = null;
 		
 		try {
-			conn = JdbcUtil.getConnection();
 			stat = conn.prepareStatement(sql);
 			int i = 1;
 			for (Object arg : args) {
@@ -81,8 +103,18 @@ public class TransactionTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			JdbcUtil.closeStatAndConnAndResultSet(stat, conn, null);
+			// 这里不要关闭数据库连接 connection
+			JdbcUtil.closeStatAndConnAndResultSet(stat, null, null);
 		}
 		return 0;
 	}
 }
+
+
+
+
+
+
+
+
+
