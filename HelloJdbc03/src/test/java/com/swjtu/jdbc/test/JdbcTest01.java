@@ -1,6 +1,10 @@
 package com.swjtu.jdbc.test;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,6 +23,77 @@ import com.swjtu.jdbc.utils.JdbcUtil;
 import com.swjtu.jdbc.utils.ReflectionUtil;
 
 public class JdbcTest01 {
+	
+	/**
+	 * 读取blob类型的数据
+	 * 调用 getBlob(int index) 
+	 */
+	@Test
+	public void testQueryBlob() {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		try {
+			conn = JdbcUtil.getConnection();
+			String sql = "select user_name, password, picture from user_tbl where password = ?";
+			
+			ps = conn.prepareStatement(sql);
+			ps.setObject(1, "house");
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				java.sql.Blob picture = rs.getBlob(3); // 读取 java.sql.Blob 对象
+				System.out.println(picture);
+				// 把 picture 写到硬盘上
+				InputStream in = picture.getBinaryStream();
+				OutputStream os = new FileOutputStream("D:\\temp\\note\\house_out.jpg");
+				
+				byte[] buffer = new byte[1024];
+				int len = 0;
+				while ((len = in.read(buffer)) != -1) {
+					os.write(buffer);
+				}
+				os.close();
+				in.close();
+			}
+			System.out.println("查询blob完成！！");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.closeStatAndConnAndResultSet(ps, conn, null);
+		}
+	}
+	
+	/**
+	 * 插入blob类型的数据， 必须使用 PreparedStatement， 因为
+	 * blob类型的数据是无法使用 字符串拼接的。
+	 * 
+	 * 调用 setBlob(int index, InputStream inputStream) 
+	 */
+	@Test
+	public void testInsertBlob() {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		try {
+			conn = JdbcUtil.getConnection();
+			String sql = "insert into user_tbl (user_name, password, picture) values(?, ?, ?)";
+			
+			ps = conn.prepareStatement(sql);
+			ps.setObject(1, "house");
+			ps.setObject(2, "house");
+			InputStream is = new BufferedInputStream(new FileInputStream("D:\\temp\\note\\house.jpg"));
+			ps.setBlob(3, is); // 插入 blob 数据类型的字段 
+			int updRows = ps.executeUpdate();
+			System.out.println("更新记录行数 = " + updRows);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.closeStatAndConnAndResultSet(ps, conn, null);
+		}
+	}
 	
 	/**
 	 * 通过jdbc取得数据库自动生成的主键
