@@ -3,23 +3,68 @@ package com.swjtu.jdbc.test;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.junit.Test;
 
+import com.swjtu.jdbc.bean.User;
+import com.swjtu.jdbc.dao.DAOUtil;
 import com.swjtu.jdbc.utils.JdbcUtil;
 
 public class TransactionTest {
+	DAOUtil dao = new DAOUtil();
+	
 	
 	/**
 	 * 测试事务的隔离级别
-	 * 在 jdbc程序中，通过 Connection.setTransactionIsolution()设置事务隔离级别
+	 * 在 jdbc程序中，通过 Connection.setTransactionIsolution()
+	 * 设置事务隔离级别
 	 */
 	@Test
-	public void testTransactionIsolation() {
+	public void testTransactionIsolationRead() {
 		Connection conn = null;
 		try {
 			conn = JdbcUtil.getConnection(); // 获取数据库连接
-			conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ); // 可重复读
+			conn.setAutoCommit(false);
+			
+			/* 更新操作 */
+			String sql = "select balance as balance from user_tbl where user_name = ? ";
+			User user = dao.getSingle(User.class, sql, "zhangsan");
+
+			// 如果没有抛出异常，则提交事务
+			conn.commit();
+			System.out.println("提交成功！！");
+			System.out.println(user);
+		} catch (Exception e) {
+			try {
+				// 回滚事务
+				conn.rollback();
+				System.out.println("事务回滚。");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			} finally {
+				JdbcUtil.closeStatAndConnAndResultSet(null, conn, null);
+			}
+		} 
+	}
+	
+	/**
+	 * 测试事务的隔离级别
+	 * 在 jdbc程序中，通过 Connection.setTransactionIsolution()
+	 * 设置事务隔离级别
+	 */
+	@Test
+	public void testTransactionIsolationUpdate() {
+		Connection conn = null;
+		try {
+			conn = JdbcUtil.getConnection(); // 获取数据库连接
+			// 设置数据库事务隔离级别读未提交
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED); 
+			
+			/* 更新操作 */
+			String sql = "update user_tbl set balance = balance - 500 where user_name = ?";
+			int updRows = this.update(conn, sql, "zhangsan");
+			System.out.println("更新记录行数 = " + updRows);
 			
 			// 如果没有抛出异常，则提交事务
 			conn.commit();
@@ -27,9 +72,8 @@ public class TransactionTest {
 		} catch (Exception e) {
 			try {
 				// 回滚事务
-				conn.rollback();
 				System.out.println("事务回滚。");
-			} catch (SQLException e1) {
+			} catch (Exception e1) {
 				e1.printStackTrace();
 			} finally {
 				JdbcUtil.closeStatAndConnAndResultSet(null, conn, null);
@@ -82,6 +126,7 @@ public class TransactionTest {
 			}
 		} 
 	}
+
 	/**
 	 * 执行update更新操作
 	 * @param conn
@@ -104,7 +149,6 @@ public class TransactionTest {
 			e.printStackTrace();
 		} finally {
 			// 这里不要关闭数据库连接 connection
-			JdbcUtil.closeStatAndConnAndResultSet(stat, null, null);
 		}
 		return 0;
 	}
