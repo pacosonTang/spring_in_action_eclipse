@@ -1,15 +1,14 @@
 package com.swjtu.jdbc.utils;
 
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
 
-import com.mysql.jdbc.Driver;
-import com.swjtu.jdbc.test.JdbcTest;
+import javax.sql.DataSource;
+
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 /**
  * 操作jdbc的工具类-封装了一些工具方法
@@ -31,6 +30,15 @@ public class JdbcUtil {
 			}
 		}
 	}
+	
+	private static DataSource dataSource ;
+	
+	// 数据库连接池应该只被初始化一次
+	static {
+		dataSource = new ComboPooledDataSource("helloc3p0");
+	}
+	
+	
 	
 	/**
 	 * 回滚事务
@@ -123,16 +131,7 @@ public class JdbcUtil {
 	 * @throws Exception
 	 */
 	public static Connection getConnection() throws Exception {
-		
-		// 读取类路径下的 jdbc.properties 文件并将其封装到 Properties中：
-		InputStream in = JdbcTest.class.getClassLoader().getResourceAsStream("jdbc.properties");
-		Properties props = new Properties();
-		props.load(in);
-		/* 通过反射获取驱动器Driver */
-		Driver driver = (Driver) Class.forName(props.getProperty("driver")).newInstance();
-		/* 获取数据库连接  */
-		Connection conn = driver.connect(props.getProperty("url"), props);
-		return conn;
+		return dataSource.getConnection();
 	}
 	
 	/**
@@ -157,6 +156,8 @@ public class JdbcUtil {
 		}
 		if (null != conn) {
 			try {
+				// 数据库连接池的Connection对象 进行close时：
+				// 并不是真的进行关闭，而是把该数据库连接归还到 数据库连接池中；
 				conn.close(); // 关闭连接
 			} catch(Exception e) {
 				e.printStackTrace();

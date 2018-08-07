@@ -1,6 +1,5 @@
 package com.swjtu.jdbc.test;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,10 +12,68 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbcp2.BasicDataSourceFactory;
 import org.junit.Test;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.swjtu.jdbc.utils.JdbcUtil;
 
 
 public class JdbcTest {
+	
+	/**
+	 * 测试 使用 c3p0数据源获取数据库连接的 JdbcUtil
+	 * @throws Exception
+	 */
+	@Test
+	public void testJdbcUtilByc3po() throws Exception {
+		Connection conn = JdbcUtil.getConnection();
+		System.out.println(conn);
+	}
+	
+	/**
+	 * 使用 c3p0 数据库连接池
+	 * 如何使用 c3p0 数据库连接池 
+	 * 1、通过  c3p0-config.xml 配置文件 创建数据库连接池
+	 * 2、创建 ComboPooledDataSource 实例；
+	 * 3、从 DataSource 实例中获取数据库连接；
+	 * 
+	 * @throws Exception 
+	 */
+	@Test
+	public void testC3P0ByConfigFile() throws Exception {
+		DataSource dataSource = new ComboPooledDataSource("helloc3p0");
+		
+		/*从数据库源中获取数据库连接*/
+		Connection conn = dataSource.getConnection();
+		System.out.println(conn.getClass());
+		
+		ComboPooledDataSource dataSource2 = (ComboPooledDataSource) dataSource;
+		System.out.println(dataSource2.getMaxStatements()); // 20
+	}
+	
+	/**
+	 * 使用 c3p0 数据库连接池
+	 * 如何使用 c3p0 数据库连接池 
+	 * 1、通过 c3p0中 的 ComboPooledDataSource 创建数据库连接池
+	 * 2、
+	 * @throws Exception 
+	 */
+	@Test
+	public void testC3P0ByComboPooledDataSource() throws Exception {
+		InputStream is = JdbcTest.class.getClassLoader().getResourceAsStream("jdbc.properties");
+		Properties props = new Properties();
+		props.load(is);
+		
+		ComboPooledDataSource dataSource = new ComboPooledDataSource();
+
+		/*为数据源实例指定必须的属性*/
+		dataSource.setUser(props.getProperty("user"));
+		dataSource.setPassword(props.getProperty("password"));
+		dataSource.setJdbcUrl(props.getProperty("url"));
+		dataSource.setDriverClass(props.getProperty("driver"));
+		
+		/*从数据库源中获取数据库连接*/
+		Connection conn = dataSource.getConnection();
+		System.out.println(conn.getClass());
+	}
 	
 	/**
 	 * 通过 BasicDataSourceFactory 创建数据库连接池， 步骤如下：
