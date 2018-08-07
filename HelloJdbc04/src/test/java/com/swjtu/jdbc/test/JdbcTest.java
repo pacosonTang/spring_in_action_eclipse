@@ -1,15 +1,64 @@
 package com.swjtu.jdbc.test;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.Properties;
 
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.Test;
 
 import com.swjtu.jdbc.utils.JdbcUtil;
 
 
 public class JdbcTest {
+	
+	/**
+	 * 使用 dbcp 数据库连接池
+	 * 如何使用 dbcp数据库连接池 
+	 * 1、创建数据库连接池
+	 * 2、
+	 * @throws Exception 
+	 */
+	@Test
+	public void testDBCP() throws Exception {
+		InputStream is = JdbcTest.class.getClassLoader().getResourceAsStream("jdbc.properties");
+		Properties props = new Properties();
+		props.load(is);
+		
+		BasicDataSource dataSource = null;
+
+		/*创建 dbcp 数据库源实例*/
+		dataSource = new BasicDataSource();
+		
+		/*为数据源实例指定必须的属性*/
+		dataSource.setUsername(props.getProperty("user"));
+		dataSource.setPassword(props.getProperty("password"));
+		dataSource.setUrl(props.getProperty("url"));
+		dataSource.setDriverClassName(props.getProperty("driver"));
+		
+		/*指定数据源的一些可选属性*/
+		// 初始化连接数的个数
+		dataSource.setInitialSize(10);
+		// 指定最大连接数：在数据库连接池中保存的最多的空闲连接的数量
+		dataSource.setMaxIdle(50);
+		// 指定最小连接数：在数据库连接池中保存的最少的空闲连接的数量
+		dataSource.setMinIdle(5);
+		// 等待数据库连接池分配连接的最长时间 单位为毫秒，
+		// 超过该时间， 将抛出异常
+		dataSource.setMaxWaitMillis(1000 *5); // 最长等待时间， 单位毫秒
+		
+		// BasicDataSourceFactory 数据源工厂： 29分钟的时间处 
+		
+		/*从数据库源中获取数据库连接*/
+		Connection conn = dataSource.getConnection();
+		System.out.println(conn.getClass());
+	}
+	
 	
 	/**
 	 * 向数据库表 user_tbl 中插入10万条记录: 采用 预编译语句 PreparedStatement和 jdbc批量操作实现批量
