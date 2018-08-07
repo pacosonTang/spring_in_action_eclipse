@@ -10,6 +10,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSourceFactory;
 import org.junit.Test;
 
 import com.swjtu.jdbc.utils.JdbcUtil;
@@ -18,14 +19,46 @@ import com.swjtu.jdbc.utils.JdbcUtil;
 public class JdbcTest {
 	
 	/**
+	 * 通过 BasicDataSourceFactory 创建数据库连接池， 步骤如下：
+	 * 1、加载dbcp的properties配置文件， 配置文件中的键需要来自 BasicDataSource 的属性;
+	 * 2、调用 BasicDataSourceFactory.createDataSource(props) 方法 创建 DataSource 实例；
+	 * 3、从 DataSource 实例中获取数据库连接；
+	 * 4、
+	 * @throws Exception
+	 */
+	@Test
+	public void testDBCPByBasicDataSourceFactory() throws Exception {
+		InputStream is = JdbcTest.class.getClassLoader().getResourceAsStream("dbcp.properties");
+		Properties props = new Properties();
+		props.load(is);
+
+		// 通过 BasicDataSourceFactory 创建数据源 
+		DataSource dataSource = BasicDataSourceFactory.createDataSource(props);
+		// 通过数据源 获取数据库连接 
+		Connection conn = dataSource.getConnection();
+		System.out.println(conn.getClass());
+		// 数据源强制转换 
+		BasicDataSource basicDataSource = (BasicDataSource) dataSource;
+		System.out.println(basicDataSource.getMaxTotal()); // 最大连接数设置为5
+		System.out.println(basicDataSource.getMaxWaitMillis()); // 连接等待时间设置为 5 秒
+		
+		System.out.println(dataSource.getConnection().getClass());
+		System.out.println(dataSource.getConnection().getClass());
+		System.out.println(dataSource.getConnection().getClass());
+		System.out.println(dataSource.getConnection().getClass());
+		// 这是第6个连接，5秒内没有获得连接， 则抛出异常
+		System.out.println(dataSource.getConnection().getClass()); 
+	}
+	
+	/**
 	 * 使用 dbcp 数据库连接池
 	 * 如何使用 dbcp数据库连接池 
-	 * 1、创建数据库连接池
+	 * 1、通过BasicDataSource创建数据库连接池
 	 * 2、
 	 * @throws Exception 
 	 */
 	@Test
-	public void testDBCP() throws Exception {
+	public void testDBCPByBasicDataSource() throws Exception {
 		InputStream is = JdbcTest.class.getClassLoader().getResourceAsStream("jdbc.properties");
 		Properties props = new Properties();
 		props.load(is);
