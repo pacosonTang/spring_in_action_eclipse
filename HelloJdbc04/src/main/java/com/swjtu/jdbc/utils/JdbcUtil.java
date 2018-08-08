@@ -38,7 +38,15 @@ public class JdbcUtil {
 		dataSource = new ComboPooledDataSource("helloc3p0");
 	}
 	
-	
+	/**
+	 * 获取连接的方法。
+	 * 通过读取配置文件从数据库服务器获取一个连接
+	 * @return
+	 * @throws Exception
+	 */
+	public static Connection getConnection() throws Exception {
+		return dataSource.getConnection();
+	}
 	
 	/**
 	 * 回滚事务
@@ -124,15 +132,6 @@ public class JdbcUtil {
 		}
 	}
 	
-	/**
-	 * 获取连接的方法。
-	 * 通过读取配置文件从数据库服务器获取一个连接
-	 * @return
-	 * @throws Exception
-	 */
-	public static Connection getConnection() throws Exception {
-		return dataSource.getConnection();
-	}
 	
 	/**
 	 * 关闭数据库语句 statement 和 数据库连接 conn 和 结果集 ResultSet
