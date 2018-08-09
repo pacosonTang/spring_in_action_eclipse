@@ -13,21 +13,9 @@ public class UserDaoTest {
 	
 	UserDao<User> userDao = new UserDao<>();
 	
-	@Test
-	public void testBatch() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetForValue() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testQueryList() {
-		fail("Not yet implemented");
-	}
-
+	/**
+	 * 测试使用 common dbutils 查询 user_tbl 数据库表
+	 */
 	@Test
 	public void testQuery() {
 		Connection conn = null;
@@ -43,6 +31,22 @@ public class UserDaoTest {
 			JdbcUtil.closeStatAndConnAndResultSet(null, conn, null);
 		}
 	}
+	
+	@Test
+	public void testBatch() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetForValue() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testQueryList() {
+		fail("Not yet implemented");
+	}
+	
 	
 	@Test
 	public void testUpdate() {
