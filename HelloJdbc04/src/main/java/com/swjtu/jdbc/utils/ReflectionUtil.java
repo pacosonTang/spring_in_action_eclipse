@@ -14,7 +14,6 @@ import java.lang.reflect.Type;
  *
  */
 public class ReflectionUtil {
-
 	
 	/**
 	 * 通过反射, 获得定义 Class 时声明的父类的泛型参数的类型

@@ -166,8 +166,7 @@ public class DBUtilsTest {
 		}
 	}
 	/**
-	 * 使用 QueryRunner 查询数据库：
-	 * QueryRunner.query方法的返回值 取决于 ResultSetHandler实现类
+	 * 使用 QueryRunner 查询数据库： * QueryRunner.query方法的返回值 取决于 ResultSetHandler实现类
 	 * 中handle方法的返回值，其中 handle方法有参数 ResultSet ，
 	 * 可以利用 ResultSet 整理结果集；
 	 */
