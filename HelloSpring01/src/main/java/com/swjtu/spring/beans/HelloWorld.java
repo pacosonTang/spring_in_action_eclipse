@@ -6,6 +6,9 @@ public class HelloWorld {
 	public HelloWorld() {
 		System.out.println("HelloWorld Constructor!!");
 	}
+	public HelloWorld(String str) {
+		System.out.println("HelloWorld Constructor!!");
+	}
 	
 	public void hello() {
 		System.out.println("hello " + name);

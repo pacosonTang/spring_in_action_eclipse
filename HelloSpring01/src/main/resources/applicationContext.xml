@@ -3,8 +3,54 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
+	<!-- 
+		配置bean
+		class: bean的全类名， 通过反射的方式在ioc 容器中创建bean， 
+		所以要求 bean中必须有无参构造器；	
+		id：标识容器中的bean， id唯一。
+		通过  <property name="name" value="spring"></property> 中的value属性值来引用bean;
+		
+	 -->
 	<bean name="helloWorld" class="com.swjtu.spring.beans.HelloWorld">
 		<property name="name" value="spring"></property>
 	</bean>
-
+	
+	<bean name="helloWorld2" class="com.swjtu.spring.beans.HelloWorld">
+		<property name="name" value="spring2"></property>
+	</bean>
+	
+	
+	
+	<!-- 
+		通过构造方法来配置 bean 的属性, index表示顺序， type表示参数类型
+	 -->
+	 <bean id="car" class="com.swjtu.spring.beans.Car">
+	 	<constructor-arg value="audi" index="0"></constructor-arg>
+	 	<constructor-arg value="shhai" index="1"></constructor-arg>
+	 	<constructor-arg value="30000" index="2"></constructor-arg>
+	 </bean>
+	 <!-- 使用构造器注入属性值可以指定参数的位置和类型，以区分重载的构造器  -->
+	  <bean id="car2" class="com.swjtu.spring.beans.Car">
+	 	<constructor-arg value="audi A6L" index="0" type="java.lang.String"></constructor-arg>
+	 	<constructor-arg value="shhai" index="1" type="java.lang.String"></constructor-arg>
+	 	<constructor-arg value="200" index="2" type="double"></constructor-arg>
+	 </bean>
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 </beans>
