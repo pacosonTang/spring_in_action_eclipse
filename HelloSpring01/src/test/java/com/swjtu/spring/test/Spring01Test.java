@@ -63,6 +63,8 @@ public class Spring01Test {
 		System.out.println(richPerson); 
 	}
 	
+	
+	
 	// 测试赋值 级联属性 进行依赖注入
 	@Test
 	public void diByCascadeProperty() {
