@@ -5,6 +5,7 @@ public class Car {
 	private double price;
 	
 	public Car() {
+		System.out.println("car's default constructor with no parameters.");
 	}
 	
 	public Car(String brand, double price) {
