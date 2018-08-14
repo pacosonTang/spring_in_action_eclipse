@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	
+	<!-- 
+		通过 FactoryBean 来配置 Bean 的实例；
+		class： 指向 FactoryBean接口实现类 的全类名；
+		property：配置的是 FactoryBean 接口实现类的属性；
+		但实际返回的实例却是 FactoryBean.getObject() 方法返回的实例。
+	 -->
+	<bean id="car" class="com.swjtu.spring.beans.factorybean.CarFactoryBean">
+		<property name="brand" value="BMW"></property>
+	</bean>
+</beans>
+
+
+
+
+
+
+
+
+
+
+
