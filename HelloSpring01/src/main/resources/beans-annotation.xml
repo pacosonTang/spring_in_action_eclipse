@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	
+	<!-- 指定spring ioc 容器扫描的包 -->
+	<!-- 可以通过 resource-pattern 指定扫描的资源 -->
+	<!-- 
+	<context:component-scan 
+		base-package="com.swjtu.spring.beans.annotation"
+		这里仅扫描  com.swjtu.spring.beans.annotation.repository 包下的类
+		resource-pattern="repository/*.class"
+		>
+	</context:component-scan>
+	 -->
+	 
+	 <!-- 配置  context:exclude-filter  和 context:include-filter 的属性 且 type="annotation" 
+	 <context:component-scan 
+		base-package="com.swjtu.spring.beans.annotation"
+		use-default-filters="false" 
+		>  -->
+		<!-- context:exclude-filter 不包含或排除 org.springframework.stereotype.Repository类的装配 -->
+		<!-- <context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Repository"/> -->
+			
+		<!-- 
+			context:include-filter 只包含 org.springframework.stereotype.Repository类的装配
+			, 且还要设置 use-default-filters="false"
+		
+		<context:include-filter type="annotation" 
+		expression="org.springframework.stereotype.Repository"/>	
+			
+	</context:component-scan>  -->
+	
+	 <!-- 配置  context:exclude-filter  和 context:include-filter 的属性 且 type="assignable"  -->
+	 <!-- <context:component-scan 
+		base-package="com.swjtu.spring.beans.annotation"
+		>
+		 context:exclude-filter 且 type="assignable" 且移除 use-default-filters="false"  
+		            可以设置spring装配bean的策略为： 不包含接口 org.springframework.stereotype.UserRepository及其实现类 
+		 <context:exclude-filter type="assignable" expression="com.swjtu.spring.beans.annotation.repository.UserRepository"/>
+	</context:component-scan> -->
+	
+	<!-- 使用spring注解创建bean并构建bean之间的关联关系 -->
+	<context:component-scan 
+		base-package="com.swjtu.spring.beans.annotation"
+		>
+	</context:component-scan>
+	
+</beans>
+
+
+
+
