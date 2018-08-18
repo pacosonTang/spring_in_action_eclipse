@@ -41,9 +41,19 @@ public class ArithmeticCalculatorLoggingProxy {
  				// System.out.println("proxy.toString = " + proxy.toString()); 
 				String methodName = method.getName();
 				log.info("logger ==> the method " + methodName); // 日志
-				Object result = method.invoke(target, args); // 执行方法
-				log.info("logger ==> the method " + methodName + ", result = " + result); // 日志 
-				return result;
+				try {
+					// 前置通知 @Before
+					Object result = method.invoke(target, args); // 执行方法
+					// 返回通知 @AfterReturning
+					log.info("logger ==> the method " + methodName + ", result = " + result); // 日志 
+					return result;
+				} catch (Exception e) {
+					e.printStackTrace();
+					// 异常通知， 可以访问到方法抛出的异常 
+				} finally {
+					// 后置通知 @After：因为无论是否目标方法抛出异常与否，后置通知@After 都可以被调用 ，所以放在了 finally 里面
+				}
+				return null;
 			}
 		}; 
 		proxy = (ArithmeticCalculator) Proxy.newProxyInstance(loader, interfaces, handler);
