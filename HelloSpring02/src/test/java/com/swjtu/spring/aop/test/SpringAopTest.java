@@ -10,7 +10,7 @@ import com.swjtu.spring.aop.helloworld.ArithmeticCalulatorImpl;
 
 public class SpringAopTest {
 	
-	// 测试 面向切面 spring aop 编程 
+	// 测试 面向切面 spring aop 编程  @Before @After 
 	@Test
 	public void springAopTest2() {
 		// 创建 spring ioc 容器
@@ -21,8 +21,12 @@ public class SpringAopTest {
 				ctx.getBean(com.swjtu.spring.aop.impl.ArithmeticCalculator.class);
 		
 		// 使用bean
-		int result = calculator.add(3, 6);
+		int result = calculator.add(3, 6); // 加法 
 		System.out.println("result = " + result);
+		
+		result = calculator.div(12, 0); // 除法 （会抛异常）
+		System.out.println("result = " + result);
+		
 	}
 	
 	// 测试 基于动态代理的整数加减乘除 
