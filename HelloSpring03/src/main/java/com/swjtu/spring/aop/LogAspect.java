@@ -11,20 +11,30 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-//使用 @Order(1) 设置切面的优先级来解决，优先级值越小，优先级越高。
+//使用 @Order(2) 设置切面的优先级来解决，优先级值越小，优先级越高。
 @Order(2)
 @Aspect
 @Component
 public class LogAspect {
 	
+	/**
+	 * 定义一个方法， 用于声明切入点表达式。一般地，该方法中再不需要添加其他的代码。
+	 * 使用 @PointCut 来声明切入点表达式 。
+	 * 后面的其他通知直接使用 方法名来引用当前的切入点表达式。
+	 */
+	@Pointcut("execution(public int com.swjtu.spring.aop.ArithmeticCalculator.*(..))")
+	public void declareJoinPointExpression() {
+	}
+	
 	/** 前置通知 
 	 * 在 com.swjtu.spring.aop.ArithmeticCalculator 接口的每一个实现类
 	 * 的每一个方法开始之前执行一段代码；
 	 */
-	@Before("execution(public int com.swjtu.spring.aop.ArithmeticCalculator.*(int, int))")
+	@Before("declareJoinPointExpression()") // 引用切入点表达式
 	// 想知道链接细节， 放置连接点 JoinPoint 
 	public void beforeMethod(JoinPoint joinPoint) {
 		System.out.println("\nthis is a method with @Before. ");
@@ -36,7 +46,7 @@ public class LogAspect {
 	 * 在 com.swjtu.spring.aop.ArithmeticCalculator 接口的每一个实现类
 	 * 的每一个方法开始之后执行一段代码；无论该方法是否存在异常。
 	 */
-	@After("execution(public int com.swjtu.spring.aop.ArithmeticCalculator.*(int, int))")
+	@After("declareJoinPointExpression()")
 	// 想知道链接细节， 放置连接点 JoinPoint 
 	public void afterMethod(JoinPoint joinPoint) {
 		System.out.println("\nthis is a method with @After. ");
@@ -48,7 +58,7 @@ public class LogAspect {
 	 *  返回通知是可以访问到方法返回值的；
 	 *  返回通知是通过 反射来实现的；
 	 */
-	@AfterReturning(value="execution(public int com.swjtu.spring.aop.ArithmeticCalculator.*(int, int))", 
+	@AfterReturning(value="execution(declareJoinPointExpression()", 
 			        returning="result")
 	public void afterReturn(JoinPoint joinPoint, Object result) {
 		System.out.println("\nthis is a method with @AfterReturning. ");
@@ -60,7 +70,7 @@ public class LogAspect {
 	 * 可以访问到异常对象，且可以指定在出现特定异常时再执行通知代码；
 	 * 
 	 */
-	@AfterThrowing(value="execution(public int com.swjtu.spring.aop.ArithmeticCalculator.*(int, int))", 
+	@AfterThrowing(value="execution(declareJoinPointExpression()", 
 	        throwing="ex")
 	public void afterThrowing(JoinPoint joinPoint, Exception ex) {
 		System.out.println("\nthis is a method with @AfterThrowing. ");
@@ -73,7 +83,7 @@ public class LogAspect {
 	 * 且环绕通知必须有返回值；返回值即为 目标方法的返回值；
 	 */
 	// Around 环绕通知功能是最强大的，但并不表示它是最常用的， 仅了解。
-	@Around(value="execution(public int com.swjtu.spring.aop.ArithmeticCalculator.*(int, int))")
+	@Around(value="execution(declareJoinPointExpression()")
 	public Object around(ProceedingJoinPoint joinPoint) {
 		
 		System.out.println("\nthis is a method with @Around. ");
