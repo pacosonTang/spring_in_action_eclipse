@@ -1,0 +1,43 @@
+1.spring aop 配置 @Before 前置通知的步骤总结
+
+1.1）加入jar包：
+aopappliance
+aspectj.weaver
+spring aop
+spring aspects 
+
+1.2）在配置文件中加入 aop的命名空间：
+
+1.3）基于注解的方式：
+1.3.1）需要在配置文件中加入如下配置：
+<!-- 使 AspectJ 注解起作用: 自动为匹配的类生成代理对象 -->
+<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+1.3.2）把横切关注点的代码抽象到切面类中，如下
+1.3.2.1）切面类 首先是 ioc 中的 bean， 即加入 @Component 注解；
+1.3.2.2）切面还需要加入 @AspectJ 注解；
+1.3.3）在类中声明各种通知：
+	AspectJ 支持 5 种类型的通知注解: 
+		@Before: 前置通知, 在方法执行之前执行
+		@After: 后置通知, 在方法执行之后执行 
+		@AfterRunning: 返回通知, 在方法返回结果之后执行
+		@AfterThrowing: 异常通知, 在方法抛出异常之后
+		@Around: 环绕通知, 围绕着方法执行
+声明通知的步骤：
+step1）声明一个方法；
+step2）在方法前加入 @Before 注解
+
+1.3.4）可以在声明的方法中添加参数 JoinPoint joinPoint
+， 然后就能访问链接细节，如方法名称和参数值；
+【荔枝】 
+// 详细写法
+//	@Before("execution(public int com.swjtu.spring.aop.impl.ArithmeticCalculator.*(int, int ))")
+	// 省略写法: 省略了 访问修饰符+方法返回值+具体类名
+	@Before("execution(* com.swjtu.spring.aop.impl.*.*(int, int ))") 
+	public void beforeMethod(JoinPoint joinPoint) {
+		// 方法名
+		String methodName = joinPoint.getSignature().getName();
+		// 方法参数
+		List<Object> args = Arrays.asList(joinPoint.getArgs());
+		System.out.println("the methodName = " + methodName + ",  args = " + args);
+	}
+
