@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<!-- 配置bean -->
+	<bean id="arithmeticCalulator" 
+		  class="com.swjtu.spring.aop.xml.ArithmeticCalulatorImpl">
+	</bean>
+	
+	<!-- 配置切面的bean -->
+	<bean id="logAspect" class="com.swjtu.spring.aop.xml.LogAspect">
+	</bean>
+	<!-- 配置切面的bean -->
+	<bean id="validationAspect" class="com.swjtu.spring.aop.xml.ValidationAspect">
+	</bean>
+	
+	<!-- 配置aop -->
+	<aop:config>
+		<!-- 配置切点表达式 -->
+		<aop:pointcut expression="execution(* com.swjtu.spring.aop.xml.ArithmeticCalculator.*(..))" 
+		              id="myPointcut"/>
+		<!-- 配置切面及通知（共5个通知，包括前置，后置，返回，异常，环绕） -->
+		<aop:aspect ref="logAspect" order="2">
+			<aop:before method="beforeMethod" pointcut-ref="myPointcut" />
+			<aop:after method="afterMethod" pointcut-ref="myPointcut" />
+			<aop:after-throwing method="afterThrowing" pointcut-ref="myPointcut" throwing="ex" />
+			<aop:after-returning method="afterReturn" pointcut-ref="myPointcut" returning="result"/>
+			<aop:around method="around" pointcut-ref="myPointcut" />
+		</aop:aspect>              
+		<!-- 配置切面及通知 -->
+		<aop:aspect ref="validationAspect" order="1">
+			<aop:before method="validateArgs" pointcut-ref="myPointcut" />
+		</aop:aspect>   
+	</aop:config>
+</beans>
+
+
+
+
+
+
+
+
+
+
+

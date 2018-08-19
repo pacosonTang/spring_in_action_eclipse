@@ -23,7 +23,7 @@ public class LogAspect {
 	
 	/**
 	 * 定义一个方法， 用于声明切入点表达式。一般地，该方法中再不需要添加其他的代码。
-	 * 使用 @PointCut 来声明切入点表达式 。
+	 * 使用 @Pointcut 来声明切入点表达式 。
 	 * 后面的其他通知直接使用 方法名来引用当前的切入点表达式。
 	 */
 	@Pointcut("execution(public int com.swjtu.spring.aop.ArithmeticCalculator.*(..))")
@@ -58,7 +58,7 @@ public class LogAspect {
 	 *  返回通知是可以访问到方法返回值的；
 	 *  返回通知是通过 反射来实现的；
 	 */
-	@AfterReturning(value="execution(declareJoinPointExpression()", 
+	@AfterReturning(value="declareJoinPointExpression()", 
 			        returning="result")
 	public void afterReturn(JoinPoint joinPoint, Object result) {
 		System.out.println("\nthis is a method with @AfterReturning. ");
@@ -70,7 +70,7 @@ public class LogAspect {
 	 * 可以访问到异常对象，且可以指定在出现特定异常时再执行通知代码；
 	 * 
 	 */
-	@AfterThrowing(value="execution(declareJoinPointExpression()", 
+	@AfterThrowing(value="declareJoinPointExpression()", 
 	        throwing="ex")
 	public void afterThrowing(JoinPoint joinPoint, Exception ex) {
 		System.out.println("\nthis is a method with @AfterThrowing. ");
@@ -83,7 +83,7 @@ public class LogAspect {
 	 * 且环绕通知必须有返回值；返回值即为 目标方法的返回值；
 	 */
 	// Around 环绕通知功能是最强大的，但并不表示它是最常用的， 仅了解。
-	@Around(value="execution(declareJoinPointExpression()")
+	@Around(value="declareJoinPointExpression()")
 	public Object around(ProceedingJoinPoint joinPoint) {
 		
 		System.out.println("\nthis is a method with @Around. ");
