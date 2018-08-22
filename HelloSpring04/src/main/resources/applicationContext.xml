@@ -9,7 +9,8 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 	
 	<!-- 配置自动扫描的包 -->
-	<context:component-scan base-package="com.swjtu.spring.jdbc.dao"></context:component-scan>
+	<context:component-scan base-package="com.swjtu.spring.jdbc.dao">
+	</context:component-scan>
 	
 	<!-- 导入资源文件 -->
 	<context:property-placeholder location="classpath:jdbc.properties"/>
@@ -27,6 +28,12 @@
 	<!-- 配置 spring 的 JdbcTemplate -->
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 配置  NamedParameterJdbcTemplate, 该对象可以使用具名参数, 
+	         其没有无参数的构造器，所以必须为其构造器指定参数  -->
+	<bean id="" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="dataSource"></constructor-arg>
 	</bean>
 	
 </beans>

@@ -2,7 +2,9 @@ package com.swjtu.spring.jdbc.test;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -12,6 +14,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import com.swjtu.spring.jdbc.bean.Department;
 import com.swjtu.spring.jdbc.bean.User;
@@ -29,13 +34,53 @@ public class JDBCTest {
 	private JdbcTemplate jdbcTemplate;
 	private UserDao userDao;
 	private DepartmentDao departmentDao;
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	
 	{
 		ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
 		jdbcTemplate = ctx.getBean(JdbcTemplate.class);
 		userDao = ctx.getBean(UserDao.class);  
 		departmentDao = ctx.getBean(DepartmentDao.class);
+		namedParameterJdbcTemplate = ctx.getBean(NamedParameterJdbcTemplate.class);
 	}
+	
+	/**
+	 * 基于 NamedParameterJdbcTemplate 和 SqlParameterSource 插入数据
+	 * 1、使用具名参数 NamedParameterJdbcTemplate 时，可以使用  
+	 * update(String sql, SqlParameterSource paramSource) 进行更新操作；
+	 * 2、sql 语句中的 参数名 和 类的属性名一致；
+	 * 3、使用 SqlParameterSource 的实现类 BeanPropertySqlParameterSource 作为参数
+	 */
+	@Test
+	public void testNamedParameterJdbcTemplateBySqlParameterSource() {
+		String sql = "insert into user_tbl(user_name, password) values(:userName, :password)";
+		// 创建对象
+		User user = new User(); 
+		user.setUserName("tianqi");
+		user.setPassword("999999");
+		
+		SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(user);
+		// 基于 NamedParameterJdbcTemplate 插入数据
+		int updRows = namedParameterJdbcTemplate.update(sql, sqlParameterSource);
+		System.out.println("updRows = " + updRows);
+	}
+	/**
+	 * 基于 NamedParameterJdbcTemplate 插入数据: 可以为参数起名字；
+	 * 1、好处： 若有多个参数，则不用再去对应位置，直接对应参数名，便于维护；
+	 * 2、缺点：较为麻烦
+	 */
+	@Test
+	public void testNamedParameterJdbcTemplate() {
+		String sql = "insert into user_tbl(user_name, password) values(:user_name, :password)";
+		
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("user_name", "tangxiao");
+		paramMap.put("password", "123456");
+		// 基于 NamedParameterJdbcTemplate 插入数据
+		int updRows = namedParameterJdbcTemplate.update(sql, paramMap);
+		System.out.println("updRows = " + updRows);
+	}
+	
 	/**
 	 * 测试基于 JdbcDaoSupport 的 DepartmentDao
 	 */
@@ -129,8 +174,6 @@ public class JDBCTest {
 			System.out.println("rows = " + rows);
 		}
 	}
-	
-	
 	/**
 	 * 执行 insert， update， delete 
 	 */
@@ -140,15 +183,12 @@ public class JDBCTest {
 		int updRows = jdbcTemplate.update(sql, "tangrong", "1");
 		System.out.println("updRows = " + updRows);
 	}
-	
 	/**
 	 * 测试获取数据源
 	 */
 	@Test
 	public void testDataSource() {
-		
 		DataSource dataSource = ctx.getBean(DataSource.class);
-		
 		try {
 			System.out.println(dataSource.getConnection());
 			System.out.println(jdbcTemplate);

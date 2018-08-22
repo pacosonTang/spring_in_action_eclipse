@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.swjtu.spring.jdbc.bean.Department;
-import com.swjtu.spring.jdbc.bean.User;
 
 /**
  * JdbcDaoSupport 的测试用例（不推荐使用 JdbcDaoSupport ，这里仅仅是了解而已）
