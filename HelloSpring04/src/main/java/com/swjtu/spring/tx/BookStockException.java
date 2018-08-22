@@ -1,7 +1,6 @@
 package com.swjtu.spring.tx;
 
 public class BookStockException extends RuntimeException{
-
 	/**
 	 * 序列化编号 
 	 */

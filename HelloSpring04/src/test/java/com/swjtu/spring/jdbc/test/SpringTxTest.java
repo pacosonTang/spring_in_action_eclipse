@@ -1,12 +1,17 @@
 package com.swjtu.spring.jdbc.test;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.swjtu.spring.tx.BookStoreDao;
 import com.swjtu.spring.tx.BookStoreService;
+import com.swjtu.spring.tx.Cashier;
 
 /**
  * spring jdbcTemplate 的测试用例
@@ -19,11 +24,31 @@ public class SpringTxTest {
 	private JdbcTemplate jdbcTemplate;
 	private BookStoreDao bookStoreDao;
 	private BookStoreService bookStoreService;
+	private Cashier cashier;
 	{
 		ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
 		jdbcTemplate = ctx.getBean(JdbcTemplate.class);
 		bookStoreDao = ctx.getBean(BookStoreDao.class);
 		bookStoreService = ctx.getBean(BookStoreService.class);
+		cashier = ctx.getBean(Cashier.class);
+	}
+	
+	/**
+	 * 测试 事务的传播行为 
+	 * ，传播行为是  @Transactional(propagation=Propagation.REQUIRES_NEW) 
+	 */
+	@Test
+	public void testTransactionalPropagationWithREQUIRES_NEW() {
+		cashier.checkoutWithREQUIRES_NEW("zhangsan", Arrays.asList("1001", "1002"));
+	}
+	
+	/**
+	 * 测试 事务的传播行为 
+	 * ，传播行为是  @Transactional(propagation=Propagation.REQUIRED) 
+	 */
+	@Test
+	public void testTransactionalPropagationWithREQUIRED() {
+		cashier.checkoutWithREQUIRED("zhangsan", Arrays.asList("1001", "1002"));
 	}
 	
 	/**
@@ -67,5 +92,30 @@ public class SpringTxTest {
 		int price = bookStoreDao.findBookPriceByIsbn(isbn);
 		System.out.println("isbn为 " + isbn +" 的书籍的单价为 " + price);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
