@@ -9,7 +9,7 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 	
 	<!-- 配置自动扫描的包 -->
-	<context:component-scan base-package="com.swjtu.spring.jdbc.dao">
+	<context:component-scan base-package="com.swjtu.spring">
 	</context:component-scan>
 	
 	<!-- 导入资源文件 -->
