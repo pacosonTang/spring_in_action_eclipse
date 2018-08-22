@@ -10,7 +10,7 @@ public class BookStoreServiceImpl implements BookStoreService{
 	private BookStoreDao bookStoreDao;
 	
 	// 添加事务注解 @Transactional ，使其内部操作构成一个事务
-	@Transactional
+//	@Transactional
 	@Override
 	public void purchase(String userName, String isbn) {
 		// 查询价格
