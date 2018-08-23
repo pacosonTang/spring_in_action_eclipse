@@ -8,9 +8,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("cashier")
 public class CashierImpl implements Cashier{
-	@Autowired
+	
 	private BookStoreService bookStoreService; 
 	
 	// 添加事务注解 
