@@ -8,7 +8,14 @@
 </head>
 <body>
 	
+	<!--使用 @RequestHeader 获取请求头  -->
+	<a href="springmvc/testRequestHeader?username=tang">使用 @RequestHeader 获取请求头</a>
 	<br/><br/>
+	
+	<!--使用 @RequestParam 获取请求参数  -->
+	<a href="springmvc/testRequestParam?username=tang">使用 @RequestParam 获取请求参数</a>
+	<br/><br/>
+	
 	<!-- 更新操作 -->
 	<form action="springmvc/testRest/3" method="post">
 		<input type="hidden" name="_method" value="PUT">

@@ -2,8 +2,10 @@ package com.swjtu.springmvc.handler;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @RequestMapping 既可以修饰类也可以修饰方法 
@@ -12,6 +14,35 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class SpringMvcTest {
 	private final static String SUCCESS = "success";
+	
+	/** 
+	 * 使用 @RequestHeader 获取请求头，用法同 RequestParam 
+	 * 了解：使用机会较少 
+	 * @return
+	 */
+	@RequestMapping(value="/testRequestHeader")
+	public String testRequestHeader(
+			@RequestHeader(value="Accept-Language") String acceptLang) {
+		System.out.println("acceptLang = " + acceptLang);
+		return SUCCESS;
+	}
+	
+	/** 
+	 * 使用 @RequestParam 获取请求参数:
+	 * @RequestParam 来映射请求参数. 
+	 *  value 值即请求参数的参数名, 
+	 *  required 该参数是否必须. 默认为 true
+	 *  , defaultValue 请求参数的默认值 
+	 * @return
+	 */
+	@RequestMapping(value="/testRequestParam")
+	public String testRequestParam(
+			@RequestParam(value="username") String username
+			, @RequestParam(value="age", required=false, defaultValue="0") Integer age) {
+		System.out.println("username = " + username);
+		System.out.println("age = " + age); 
+		return SUCCESS;
+	}
 	
 	/**
 	 * rest 风格url。
