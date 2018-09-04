@@ -28,15 +28,46 @@ public class SpringMvcTest {
 	 * 值 value="DELETE" 或 value="PUT"
 	 * 
 	 *  在 springmvc 中的 目标方法中如何得到 id 呢？
+	 *  使用 @PathVariable 注解。
 	 */
 	
 	/**
-	 * Rest 风格编程
+	 * Rest 风格编程：更新
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="/testRest/{id}", method=RequestMethod.PUT)
+	public String testRestPut(@PathVariable("id") Integer id) {
+		System.out.println("testRestPut(), id = " + id);
+		return SUCCESS;
+	}
+	/**
+	 * Rest 风格编程：删除
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="/testRest/{id}", method=RequestMethod.DELETE)
+	public String testRestDelete(@PathVariable("id") Integer id) {
+		System.out.println("testRestDelete(), id = " + id);
+		return SUCCESS;
+	}
+	/**
+	 * Rest 风格编程：新增
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="/testRest/{id}", method=RequestMethod.POST)
+	public String testRestPost(@PathVariable("id") Integer id) {
+		System.out.println("testRestPost(), id = " + id);
+		return SUCCESS;
+	}
+	/**
+	 * Rest 风格编程：查询
 	 * @param id
 	 * @return
 	 */
 	@RequestMapping(value="/testRest/{id}", method=RequestMethod.GET)
-	public String testRest(@PathVariable("id") Integer id) {
+	public String testRestGet(@PathVariable("id") Integer id) {
 		System.out.println("testRest(), id = " + id);
 		return SUCCESS;
 	}

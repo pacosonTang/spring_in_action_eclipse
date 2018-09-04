@@ -12,18 +12,25 @@
 	<!-- 更新操作 -->
 	<form action="springmvc/testRest/3" method="post">
 		<input type="hidden" name="_method" value="PUT">
-		<input type="submit" value="test rest put"/>
+		<input type="submit" value="test rest PUT OR UPDATE"/>
 	</form>
 	<br/><br/>
 	
 	<!-- 删除操作 -->
 	<form action="springmvc/testRest/2" method="post">
 		<input type="hidden" name="_method" value="DELETE">
-		<input type="submit" value="test rest delete"/>
+		<input type="submit" value="test rest DELETE"/>
 	</form>
 	<br/><br/>
 	
-	<a href="/springmvc/testRest/1">test rest get</a>	
+	<!-- 新增操作 -->
+	<form action="springmvc/testRest/2" method="post">
+		<input type="submit" value="test rest POST OR CREATE"/>
+	</form>
+	<br/><br/>
+	
+	<!-- 获取操作 -->
+	<a href="springmvc/testRest/1">test rest get</a>	
 	<br/><br/>
 	
 	<a href="springmvc/testPathVariable/120">testPathVariable</a>
