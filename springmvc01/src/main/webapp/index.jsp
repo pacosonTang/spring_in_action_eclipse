@@ -8,6 +8,10 @@
 </head>
 <body>
 	
+	<!-- testModelAndView 测试模型和视图数据 -->
+	<a href="springmvc/testModelAndView">testModelAndView 测试模型和视图数据</a>
+	<br/><br/>
+	
 	<a href="springmvc/testServletApi">test servlet api（servlet原生api）</a>
 	<br/><br/>
 	

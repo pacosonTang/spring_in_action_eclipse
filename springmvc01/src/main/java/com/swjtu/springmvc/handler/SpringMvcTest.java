@@ -2,6 +2,7 @@ package com.swjtu.springmvc.handler;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.swjtu.springmvc.entity.User;
 
@@ -23,6 +25,35 @@ import com.swjtu.springmvc.entity.User;
 @Controller
 public class SpringMvcTest {
 	private final static String SUCCESS = "success";
+	
+	/** 
+	 * 目标方法的返回值可以是 ModelAndView 类型。 
+	 * 其中可以包含视图和模型信息, 
+	 * SpringMVC 会把 ModelAndView 的 model 中数据放入到 request 域对象中。 
+	 */
+	@RequestMapping(value="/testMap")
+	public ModelAndView testMap() throws IOException {
+		String viewName = SUCCESS;
+		ModelAndView mav = new ModelAndView(viewName);
+		// 添加模型数据到 ModelAndView 中；
+		mav.addObject("time", new Date());
+		return mav;
+	}
+	
+	/** 
+	 * 目标方法的返回值可以是 ModelAndView 类型。 
+	 * 其中可以包含视图和模型信息, 
+	 * SpringMVC 会把 ModelAndView 的 model 中数据放入到 request 域对象中。 
+	 * 
+	 */
+	@RequestMapping(value="/testModelAndView")
+	public ModelAndView testModelAndView() throws IOException {
+		String viewName = SUCCESS;
+		ModelAndView mav = new ModelAndView(viewName);
+		// 添加模型数据到 ModelAndView 中；
+		mav.addObject("time", new Date());
+		return mav;
+	}
 	
 	/** 
 	 * servlet原生api:

@@ -8,5 +8,7 @@
 </head>
 <body>
 	<h1>success</h1>
+	
+	time: ${requestScope.time}
 </body>
 </html>
