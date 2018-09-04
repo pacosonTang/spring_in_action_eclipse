@@ -1,11 +1,20 @@
 package com.swjtu.springmvc.handler;
 
+import java.io.IOException;
+import java.io.Writer;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.swjtu.springmvc.entity.User;
 
 /**
  * @RequestMapping 既可以修饰类也可以修饰方法 
@@ -16,6 +25,52 @@ public class SpringMvcTest {
 	private final static String SUCCESS = "success";
 	
 	/** 
+	 * servlet原生api:
+	 * 
+	 * 可以使用 Serlvet 原生的 API 作为目标方法的参数 具体支持以下类型:
+	 * 
+	 * HttpServletRequest 
+	 * HttpServletResponse 
+	 * HttpSession
+	 * java.security.Principal 
+	 * Locale InputStream 
+	 * OutputStream 
+	 * Reader 
+	 * Writer
+	 * @throws IOException 
+	 */
+	@RequestMapping(value="/testServletApi")
+	public void testServletApi(HttpServletRequest request, 
+			HttpServletResponse response, Writer out) throws IOException {
+		System.out.println("testServletApi(): HttpServletRequest = " + request 
+				+ ", \n HttpServletResponse" + response);
+		out.write("hello springmvc"); 
+	}
+	
+	/** 
+	 *  Spring MVC 会按请求参数名和 POJO 属性名进行自动匹配， 
+	 *  自动为该对象填充属性值。支持级联属性。
+	 * 如：dept.deptId、dept.address.tel 等
+	 */
+	@RequestMapping(value="/testPojo")
+	public String testPojo(User user) {
+		System.out.println("testPojo(): " + user);
+		return SUCCESS;
+	}
+	
+	/** 
+	 * 使用 @CookieValue 获取 Cookie 信息 ， 
+	 * 仅了解 
+	 * @return
+	 */
+	@RequestMapping(value="/testCookieValue")
+	public String testCookieValue(
+			@CookieValue(value="JSESSIONID") String JSESSIONID) {
+		System.out.println("testCookieValue : JSESSIONID = " + JSESSIONID);
+		return SUCCESS;
+	}
+	
+	/** 
 	 * 使用 @RequestHeader 获取请求头，用法同 RequestParam 
 	 * 了解：使用机会较少 
 	 * @return
@@ -23,7 +78,7 @@ public class SpringMvcTest {
 	@RequestMapping(value="/testRequestHeader")
 	public String testRequestHeader(
 			@RequestHeader(value="Accept-Language") String acceptLang) {
-		System.out.println("acceptLang = " + acceptLang);
+		System.out.println("testRequestHeader: AcceptLang = " + acceptLang);
 		return SUCCESS;
 	}
 	
@@ -39,8 +94,8 @@ public class SpringMvcTest {
 	public String testRequestParam(
 			@RequestParam(value="username") String username
 			, @RequestParam(value="age", required=false, defaultValue="0") Integer age) {
-		System.out.println("username = " + username);
-		System.out.println("age = " + age); 
+		System.out.println("testRequestParam： username = " + username);
+		System.out.println("testRequestParam： age = " + age); 
 		return SUCCESS;
 	}
 	

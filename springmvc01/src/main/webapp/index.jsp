@@ -8,6 +8,27 @@
 </head>
 <body>
 	
+	<a href="springmvc/testServletApi">test servlet api（servlet原生api）</a>
+	<br/><br/>
+	
+	<!-- Spring MVC 会按请求参数名和 POJO 属性名进行自动匹配， 
+	 *  自动为该对象填充属性值。支持级联属性。 -->
+	<form action="springmvc/testPojo" method="post">
+		username: <input type="text" name="username"/> <br/>
+		password: <input type="password" name="password"/> <br/>
+		email: <input type="text" name="email"/> <br/>
+		age: <input type="text" name="age"/> <br/>
+		province: <input type="text" name="address.province"/> <br/>
+		city: <input type="text" name="address.city"/> <br/>
+		<input type="submit" value="submit"/>
+	</form>
+	<br/><br/>
+	
+	<!--使用 @CookieValue 获取 Cookie 信息   -->
+	<a href="springmvc/testCookieValue">使用 @CookieValue 获取 Cookie 信息  </a>
+	<br/><br/>
+	
+	
 	<!--使用 @RequestHeader 获取请求头  -->
 	<a href="springmvc/testRequestHeader?username=tang">使用 @RequestHeader 获取请求头</a>
 	<br/><br/>
