@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.swjtu.springmvc.entity.User;
@@ -24,7 +24,7 @@ import com.swjtu.springmvc.entity.User;
 /**
  * @RequestMapping 既可以修饰类也可以修饰方法 
  */ 
-@SessionAttributes(value={"user"}, types={User.class, String.class})
+/*@SessionAttributes(value={"user"}, types={String.class})*/
 // @SessionAttributes 修饰的属性 既会放到request 请求域里面， 也会放到session 域里边
 
 @RequestMapping("/springmvc")
@@ -33,7 +33,31 @@ public class SpringMvcTest {
 	
 	private final static String SUCCESS = "success";
 	
-
+	/**
+	 * 1. 有 @ModelAttribute 标记的方法, 会在每个目标方法执行之前被 SpringMVC 调用! 
+	 * 2. @ModelAttribute 注解也可以来修饰目标方法 POJO 类型的入参, 其 value 属性值有如下的作用:
+	 * 1). SpringMVC 会使用 value 属性值在 implicitModel 中查找对应的对象, 若存在则会直接传入到目标方法的入参中.
+	 * 2). SpringMVC 会一 value 为 key, POJO 类型的对象为 value, 存入到 request 中. 
+	 */
+	@ModelAttribute
+	public void getUser(@RequestParam(value="id",required=false) Integer id, 
+			Map<String, Object> map){
+		System.out.println("modelAttribute method");
+		if(id != null){
+			//模拟从数据库中获取对象
+			User user = new User("1", "Tom", "123456", "tom@atguigu.com", "12"); 
+			System.out.println("从数据库中获取一个对象: " + user);
+			
+			map.put("user", user);
+		}
+	}
+	
+	@RequestMapping(value="/testModelAttribute")
+	public String testModelAttribute(User user){
+		System.out.println("修改: " + user);
+		return SUCCESS;
+	}
+	
 	/**
 	 * @SessionAttributes 除了可以通过属性名指定需要放到会话中的属性外(实际上使用的是 value 属性值),
 	 * 还可以通过模型属性的对象类型指定哪些模型属性需要放到会话中(实际上使用的是 types 属性值)
