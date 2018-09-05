@@ -8,6 +8,18 @@
 </head>
 <body>
 	
+	<!-- SessionAttributes 把数据封装到 session 域中 -->
+	<a href="springmvc/testSessionAttributes">testSessionAttributes</a>
+	<br/><br/>
+	
+	<!-- testMap 基于map传递数据到前台 -->
+	<a href="springmvc/testMap">testMap</a>
+	<br/><br/>
+	
+	<!-- testMap  -->
+	<a href="springmvc/testMap">testMap</a>
+	<br/><br/>
+	
 	<!-- testModelAndView 测试模型和视图数据 -->
 	<a href="springmvc/testModelAndView">testModelAndView 测试模型和视图数据</a>
 	<br/><br/>

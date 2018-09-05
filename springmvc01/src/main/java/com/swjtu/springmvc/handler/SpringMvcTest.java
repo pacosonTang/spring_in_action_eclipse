@@ -2,7 +2,9 @@ package com.swjtu.springmvc.handler;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.swjtu.springmvc.entity.User;
@@ -21,23 +24,45 @@ import com.swjtu.springmvc.entity.User;
 /**
  * @RequestMapping 既可以修饰类也可以修饰方法 
  */ 
+@SessionAttributes(value={"user"}, types={User.class, String.class})
+// @SessionAttributes 修饰的属性 既会放到request 请求域里面， 也会放到session 域里边
+
 @RequestMapping("/springmvc")
 @Controller
 public class SpringMvcTest {
+	
 	private final static String SUCCESS = "success";
 	
-	/** 
-	 * 目标方法的返回值可以是 ModelAndView 类型。 
-	 * 其中可以包含视图和模型信息, 
-	 * SpringMVC 会把 ModelAndView 的 model 中数据放入到 request 域对象中。 
+
+	/**
+	 * @SessionAttributes 除了可以通过属性名指定需要放到会话中的属性外(实际上使用的是 value 属性值),
+	 * 还可以通过模型属性的对象类型指定哪些模型属性需要放到会话中(实际上使用的是 types 属性值)
+	 * 
+	 * 注意: 该注解只能放在类的上面. 而不能修饰放方法. 
+	 * @param map
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value="/testSessionAttributes")
+	public String testSessionAttributes(Map<String, Object> map) throws IOException {
+		
+		User user = new User("1", "2", "3", "4");
+		map.put("user", user);
+		map.put("school", "swjtu");
+		return SUCCESS; 
+	}
+	
+	/**
+	 * 目标方法可以添加 Map 类型(实际上也可以是 Model 类型或 ModelMap 类型)的参数. 
+	 * @param map
+	 * @return
+	 * @throws IOException
 	 */
 	@RequestMapping(value="/testMap")
-	public ModelAndView testMap() throws IOException {
-		String viewName = SUCCESS;
-		ModelAndView mav = new ModelAndView(viewName);
-		// 添加模型数据到 ModelAndView 中；
-		mav.addObject("time", new Date());
-		return mav;
+	public String testMap(Map<String, Object> map) throws IOException {
+		System.out.println(map.getClass().getName());
+		map.put("names", Arrays.asList("A", "B", "C"));
+		return SUCCESS; 
 	}
 	
 	/** 
