@@ -22,4 +22,13 @@
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="i18n"></property>
 	</bean>
+	
+	<!-- 配置直接转发的页面
+		输入 url  http://localhost:8080/springmvc01/success 可以直接访问 success.jsp页面
+		， 中间无需经过 handler 的方法
+	 -->
+	<mvc:view-controller path="/success" view-name="success"/>
+	
+	<!-- 在实际开发中，通常都需要配置 mvc:annotation-driven 标签 -->
+	<mvc:annotation-driven></mvc:annotation-driven> 
 </beans>
