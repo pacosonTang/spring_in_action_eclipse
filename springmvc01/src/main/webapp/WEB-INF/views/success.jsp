@@ -13,13 +13,21 @@
 	
 	names: ${requestScope.names} <br><br>
 	
-	request user: ${requestScope.user} <br><br>
+	request User: ${requestScope.user} <br><br>
 	
-	<%-- session user: ${sessionScope.user} <br><br> --%>
+	session User: ${sessionScope.user} <br><br>
 	
-	<%-- request school: ${requestScope.school} <br><br>
+	request "abc" User: ${requestScope.abc} <br><br>
 	
-	session school: ${sessionScope.school} <br><br> --%>
+	session "abc" User: ${sessionScope.abc} <br><br>
+	
+	request "user" User: ${requestScope.user} <br><br>
+	
+	session "user" User: ${sessionScope.user} <br><br>
+	
+	request school: ${requestScope.school} <br><br>
+	
+	session school: ${sessionScope.school} <br><br>
 	
 </body>
 </html>

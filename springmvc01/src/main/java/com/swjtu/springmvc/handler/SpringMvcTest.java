@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.swjtu.springmvc.entity.User;
@@ -24,7 +25,7 @@ import com.swjtu.springmvc.entity.User;
 /**
  * @RequestMapping 既可以修饰类也可以修饰方法 
  */ 
-/*@SessionAttributes(value={"user"}, types={String.class})*/
+@SessionAttributes(value={"user"}, types={String.class})
 // @SessionAttributes 修饰的属性 既会放到request 请求域里面， 也会放到session 域里边
 
 @RequestMapping("/springmvc")
@@ -32,6 +33,14 @@ import com.swjtu.springmvc.entity.User;
 public class SpringMvcTest {
 	
 	private final static String SUCCESS = "success";
+	
+
+	@RequestMapping("/testViewAndViewResolver")
+	public String testViewAndViewResolver(){
+		System.out.println("testViewAndViewResolver");
+		
+		return SUCCESS;
+	}
 	
 	/**
 	 * 1. 有 @ModelAttribute 标记的方法, 会在每个目标方法执行之前被 SpringMVC 调用! 
@@ -48,7 +57,7 @@ public class SpringMvcTest {
 			User user = new User("1", "Tom", "123456", "tom@atguigu.com", "12"); 
 			System.out.println("从数据库中获取一个对象: " + user);
 			
-			map.put("user", user);
+			map.put("abc", user);
 		}
 	}
 	
@@ -102,7 +111,7 @@ public class SpringMvcTest {
 	 * 4). 把 WebDataBinder 的 target 作为参数传递给目标方法的入参. 
 	 */
 	@RequestMapping(value="/testModelAttribute")
-	public String testModelAttribute(User user){
+	public String testModelAttribute(@ModelAttribute("abc") User user){
 		System.out.println("修改: " + user);
 		return SUCCESS;
 	}
