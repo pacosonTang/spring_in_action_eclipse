@@ -34,6 +34,16 @@ public class SpringMvcTest {
 	
 	private final static String SUCCESS = "success";
 	
+	/**
+	 * 测试 重定向 
+	 * @return
+	 */
+	@RequestMapping("/testRedirect")
+	public String testRedirect(){
+		
+		System.out.println("testRedirect");
+		return "redirect:/index.jsp";
+	}
 
 	/**
 	 * 测试自定义视图和视图解析器

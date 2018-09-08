@@ -8,6 +8,11 @@
 </head>
 <body>
 	
+	<!-- 测试重定向 -->
+	<a href="springmvc/testRedirect"> 测试重定向  </a>
+	<br/><br/>
+	
+	
 	<!-- 测试自定义视图  -->
 	<a href="springmvc/testCustomView"> 自定义视图 </a>
 	<br/><br/>
