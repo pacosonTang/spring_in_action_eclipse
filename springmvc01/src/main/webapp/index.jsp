@@ -8,6 +8,11 @@
 </head>
 <body>
 	
+	<!-- 测试自定义视图  -->
+	<a href="springmvc/testCustomView"> 自定义视图 </a>
+	<br/><br/>
+	
+	<!-- 测试视图和视图解析器 -->
 	<a href="springmvc/testViewAndViewResolver"> test ViewAndViewResolver</a>
 	<br/><br/>
 	

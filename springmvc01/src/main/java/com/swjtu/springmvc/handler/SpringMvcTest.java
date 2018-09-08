@@ -35,6 +35,18 @@ public class SpringMvcTest {
 	private final static String SUCCESS = "success";
 	
 
+	/**
+	 * 测试自定义视图和视图解析器
+	 * @return
+	 */
+	@RequestMapping("/testCustomView")
+	public String testCustomView(){
+		
+		System.out.println("testCustomView");
+		return "helloView";
+	}
+	
+	
 	@RequestMapping("/testViewAndViewResolver")
 	public String testViewAndViewResolver(){
 		System.out.println("testViewAndViewResolver");
