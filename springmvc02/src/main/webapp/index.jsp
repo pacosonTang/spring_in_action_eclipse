@@ -8,6 +8,10 @@
 </head>
 <body>
 	
+	<!-- 创建用户 -->
+	<a href="springmvc/emp"> 创建用户 </a>
+	<br/><br/>
+	
 	<!-- 获取所有员工列表 -->
 	<a href="springmvc/emps"> 员工列表 </a>
 	<br/><br/>
