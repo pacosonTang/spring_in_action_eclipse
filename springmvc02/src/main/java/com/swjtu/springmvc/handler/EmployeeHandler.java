@@ -4,9 +4,11 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.swjtu.springmvc.dao.DepartmentDao;
 import com.swjtu.springmvc.dao.EmployeeDao;
@@ -22,6 +24,26 @@ public class EmployeeHandler {
 	@Autowired
 	private DepartmentDao departmentDao;
 	
+	@ModelAttribute
+	public void getEmployee(@RequestParam(value="id", required=false) Integer id
+			, Map<String, Object> map) {
+		if (id != null) {
+			map.put("emp", employeeDao.get(id));
+		}
+	} 
+	/**
+	 * 更新员工
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping(value="/save", method=RequestMethod.PUT)
+	public String update(@ModelAttribute("emp") Employee employee) {
+		
+		System.out.println("update");
+		employeeDao.save(employee);
+		return "redirect:/emps";
+	}
+	
 	/**
 	 * 更新员工前获取员工信息
 	 * @param map
@@ -32,7 +54,7 @@ public class EmployeeHandler {
 			, Map<String, Object> map) {
 		
 		System.out.println("input method for get emp info by id");
-		map.put("employee", employeeDao.get(id));
+		map.put("emp", employeeDao.get(id));
 		map.put("depts", departmentDao.getDepartments());
 		return "input";
 	}
@@ -73,7 +95,7 @@ public class EmployeeHandler {
 
 		System.out.println("input");
 		map.put("depts", departmentDao.getDepartments());
-		map.put("employee", new Employee());
+		map.put("emp", new Employee());
 		return "input";
 	}
 	

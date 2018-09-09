@@ -20,9 +20,20 @@
 		若没有指定该属性，则默认从 request 域对象中读取 command 的表单 bean
 		如果该属性值也不存在，则会发生错误。
 	-->
-	<form:form action="save" method="post" modelAttribute="employee">
+	<form:form action="${pageContext.request.contextPath }/springmvc/save" method="POST" modelAttribute="emp">
 		<!-- path属性对应html 表单的name属性 -->
-		lastname ： <form:input path="lastName" /> 
+		<!-- 修改emp时， lastname 不能被显示 -->
+		<c:if test="${emp.id == null }">
+			lastname ： <form:input path="lastName" />
+		</c:if>
+		<c:if test="${emp.id != null} ">
+			<form:hidden path="id"/>
+			<input type="hidden" name="_method" value="PUT" />
+			<%-- 对于 _method 不能使用 form:hidden 标签, 因为 modelAttribute 对应的 bean 中没有 _method 这个属性 --%>
+			<%-- 
+			<form:hidden path="_method" value="PUT"/>
+			--%>
+		</c:if> 
 		<br>
 		email： <form:input path="email"/> 
 		<br>
