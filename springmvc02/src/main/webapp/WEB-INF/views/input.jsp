@@ -10,6 +10,14 @@
 <title>添加员工</title>
 </head>
 <body>
+
+	<form action="${pageContext.request.contextPath }/springmvc/testConverter" method="POST">
+		<!-- lastName, email, gender, department.id 如 gg, gg@baidu.com， 0， 111-->
+		employee: <input type="text" name="employee"/>
+		<input type="submit" value="Submit"/>
+	</form>
+	
+	<br><br>
 	<h1>添加员工</h1>
 	
 	<!--  
@@ -48,6 +56,12 @@
 		department： <form:select path="department.id" 
 			items="${depts }" itemLabel="departmentName" itemValue="id"></form:select> 
 			<br>
+			<!--  
+				问题1、数据类型转换；
+				问题2、数据类型格式化；
+				问题3、数据校验问题；
+			birth:<form:input path="birth" />
+			-->
 		<input type="submit" value="提交">
 	</form:form>
 	<br><br>
