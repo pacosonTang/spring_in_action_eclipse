@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -80,9 +82,16 @@ public class EmployeeHandler {
 	 * @return
 	 */
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public String save(Employee employee) {
+	public String save(Employee employee, BindingResult result) {
 		
-		System.out.println("save");
+		if (result.getErrorCount() > 0) {
+			System.out.println("出错了");
+			
+			for(FieldError error : result.getFieldErrors()) {
+				System.out.println(error.getField() + " : " + error.getDefaultMessage());
+			} 
+		}
+		System.out.println("save " + employee);
 		employeeDao.save(employee);
 		return "redirect:/springmvc/emps";
 	}
@@ -115,7 +124,6 @@ public class EmployeeHandler {
 	}
 	
 	/**
-
 	 * 由 @InitBinder 标识的方法• ，可以对 WebDataBinder 对
 		象进行初始化。WebDataBinder 是 DataBinder 的子类，用
 		于完成由表单字段到 JavaBean 属性的绑定
@@ -123,9 +131,9 @@ public class EmployeeHandler {
 		@InitBinder方法的参数通常是是 WebDataBinder
 	 * @param binder 
 	 */
-	@InitBinder
+	/*@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		// 不对 lastName 赋值 
 		binder.setDisallowedFields("lastName");
-	}
+	}*/
 }

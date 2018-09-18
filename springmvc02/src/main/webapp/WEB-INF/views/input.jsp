@@ -60,8 +60,9 @@
 				问题1、数据类型转换；
 				问题2、数据类型格式化；
 				问题3、数据校验问题；
-			birth:<form:input path="birth" />
 			-->
+			birth:<form:input path="birth" /><br>
+			salary:<form:input path="salary" /><br>
 		<input type="submit" value="提交">
 	</form:form>
 	<br><br>

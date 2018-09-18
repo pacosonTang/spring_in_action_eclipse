@@ -47,16 +47,29 @@
 	 <mvc:default-servlet-handler/>
 	 
 	<!-- 在实际开发中，通常都需要配置 mvc:annotation-driven 标签，直接访问某个页面，不经过handler中的方法 -->
-	<!-- <mvc:annotation-driven conversion-service="conversionServiceFactoryBean"></mvc:annotation-driven> -->
-	<mvc:annotation-driven></mvc:annotation-driven> 
+	<mvc:annotation-driven conversion-service="conversionServiceFactoryBean"></mvc:annotation-driven>
+	<!-- <mvc:annotation-driven></mvc:annotation-driven> --> 
 	
 	 <!-- 配置 ConversionService --> 
 	 <bean id="conversionServiceFactoryBean" 
-	 	class="org.springframework.context.support.ConversionServiceFactoryBean">
+	 	class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+	    <!-- 这样写(class="org.springframework.format.support.FormattingConversionServiceFactoryBean")
+	       ， 既可以使用  FormattingConversionServiceFactoryBean 也可以添加自定义的类型转换器 -->
 	 	<property name="converters">
 	 		<set>
 	 			<ref bean="employeeConverter"/>
 	 		</set>
 	 	</property>
 	 </bean>
+	 
+	 <!-- <bean id="conversionServiceFactoryBean"
+	 	class="org.springframework.context.support.ConversionServiceFactoryBean">
+	        这样写(class="org.springframework.context.support.ConversionServiceFactoryBean")
+	        ， 只能使用自定义的类型转换器 
+	 	<property name="converters">
+	 		<set>
+	 			<ref bean="employeeConverter"/>
+	 		</set>
+	 	</property>
+	 </bean> -->
 </beans>
