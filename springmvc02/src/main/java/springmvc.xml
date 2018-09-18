@@ -33,10 +33,8 @@
 		输入 url  http://localhost:8080/springmvc01/success 可以直接访问 success.jsp页面
 		， 中间无需经过 handler 的方法
 	 -->
-	<mvc:view-controller path="/success" view-name="success"/>
+	<!-- <mvc:view-controller path="/success" view-name="success"/> -->
 	
-	<!-- 在实际开发中，通常都需要配置 mvc:annotation-driven 标签，直接访问某个页面，不经过handler中的方法 -->
-	<mvc:annotation-driven conversion-service="conversionServiceFactoryBean"></mvc:annotation-driven> 
 	
 	<!--  
 		default-servlet-handler 将在 SpringMVC 上下文中定义一个 DefaultServletHttpRequestHandler,
@@ -48,6 +46,10 @@
 	-->
 	 <mvc:default-servlet-handler/>
 	 
+	<!-- 在实际开发中，通常都需要配置 mvc:annotation-driven 标签，直接访问某个页面，不经过handler中的方法 -->
+	<!-- <mvc:annotation-driven conversion-service="conversionServiceFactoryBean"></mvc:annotation-driven> -->
+	<mvc:annotation-driven></mvc:annotation-driven> 
+	
 	 <!-- 配置 ConversionService --> 
 	 <bean id="conversionServiceFactoryBean" 
 	 	class="org.springframework.context.support.ConversionServiceFactoryBean">

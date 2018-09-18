@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -110,5 +112,20 @@ public class EmployeeHandler {
 		System.out.println("list");
 		map.put("emps", employeeDao.getAll());
 		return LIST;
+	}
+	
+	/**
+
+	 * 由 @InitBinder 标识的方法• ，可以对 WebDataBinder 对
+		象进行初始化。WebDataBinder 是 DataBinder 的子类，用
+		于完成由表单字段到 JavaBean 属性的绑定
+		@InitBinder方法不能有返回值，它必须声明为void• 。
+		@InitBinder方法的参数通常是是 WebDataBinder
+	 * @param binder 
+	 */
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		// 不对 lastName 赋值 
+		binder.setDisallowedFields("lastName");
 	}
 }
