@@ -29,10 +29,14 @@
 		如果该属性值也不存在，则会发生错误。
 	-->
 	<form:form action="${pageContext.request.contextPath }/springmvc/save" method="POST" modelAttribute="emp">
+		
+		<form:errors path="*"></form:errors>
+		
 		<!-- path属性对应html 表单的name属性 -->
 		<!-- 修改emp时， lastname 不能被显示 -->
 		<c:if test="${emp.id == null }">
 			lastname ： <form:input path="lastName" />
+			<form:errors path="lastName"></form:errors>
 		</c:if>
 		<c:if test="${emp.id != null} ">
 			<form:hidden path="id"/>
@@ -43,7 +47,8 @@
 			--%>
 		</c:if> 
 		<br>
-		email： <form:input path="email"/> 
+		email： <form:input path="email"/>
+		<form:errors path="email"></form:errors> 
 		<br>
 		<%
 			Map<String, String> genders = new HashMap<String, String>();
@@ -60,8 +65,19 @@
 				问题1、数据类型转换；
 				问题2、数据类型格式化；
 				问题3、数据校验问题；
+				3.1） 如何校验？ 注解？
+				3.1.1） 使用 JSR 303验证 标准；
+				3.1.2） 加入 hibernate validator 验证框架 的jar包；
+				3.1.3） 在 springmvc 配置文件中添加  <mvc:annotation-driven />
+				3.1.4) 需要在bean的属性上 添加对应的注解；
+				3.1.5） 在目标方法bean类型的前面添加 @Valid 注解；
+				 
+				3.2）验证出错 转向到 哪一个页面？
+				3.3）错误消息？ 如何显示， 如何把错误消息进行国际化；
+				
 			-->
 			birth:<form:input path="birth" /><br>
+			<form:errors path="birth"></form:errors>
 			salary:<form:input path="salary" /><br>
 		<input type="submit" value="提交">
 	</form:form>

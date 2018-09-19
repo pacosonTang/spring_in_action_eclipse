@@ -35,7 +35,6 @@
 	 -->
 	<!-- <mvc:view-controller path="/success" view-name="success"/> -->
 	
-	
 	<!--  
 		default-servlet-handler 将在 SpringMVC 上下文中定义一个 DefaultServletHttpRequestHandler,
 		它会对进入 DispatcherServlet 的请求进行筛查, 如果发现是没有经过映射的请求, 就将该请求交由 WEB 应用服务器默认的 
@@ -47,8 +46,8 @@
 	 <mvc:default-servlet-handler/>
 	 
 	<!-- 在实际开发中，通常都需要配置 mvc:annotation-driven 标签，直接访问某个页面，不经过handler中的方法 -->
-	<mvc:annotation-driven conversion-service="conversionServiceFactoryBean"></mvc:annotation-driven>
-	<!-- <mvc:annotation-driven></mvc:annotation-driven> --> 
+	<!-- <mvc:annotation-driven conversion-service="conversionServiceFactoryBean"></mvc:annotation-driven> -->
+	<mvc:annotation-driven></mvc:annotation-driven> 
 	
 	 <!-- 配置 ConversionService --> 
 	 <bean id="conversionServiceFactoryBean" 
@@ -72,4 +71,10 @@
 	 		</set>
 	 	</property>
 	 </bean> -->
+	 
+	 <!-- 配置国际化资源文件 --> 
+	 <bean id="resourceBundleMessageSource" 
+	 	class="org.springframework.context.support.ResourceBundleMessageSource">
+	 	<property name="basename" value="i18n"></property>
+	 </bean>
 </beans>
