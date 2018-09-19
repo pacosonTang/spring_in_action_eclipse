@@ -7,6 +7,11 @@
 	<!-- 配置 org.springframework.web.filter.HiddenHttpMethodFilter 
 	     作用： 可以吧 POST 请求转为 DELETE 或 POST 请求
 	 -->
+	 
+	 <welcome-file-list>
+	 	<welcome-file>/index.jsp</welcome-file>
+	 </welcome-file-list>
+	 
 	<filter >
 		<filter-name>hiddenHttpMethodFilter</filter-name>
 		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>

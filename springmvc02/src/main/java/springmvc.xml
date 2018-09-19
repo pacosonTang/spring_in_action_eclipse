@@ -33,7 +33,7 @@
 		输入 url  http://localhost:8080/springmvc01/success 可以直接访问 success.jsp页面
 		， 中间无需经过 handler 的方法
 	 -->
-	<!-- <mvc:view-controller path="/success" view-name="success"/> -->
+	<mvc:view-controller path="/success" view-name="success"/>
 	
 	<!--  
 		default-servlet-handler 将在 SpringMVC 上下文中定义一个 DefaultServletHttpRequestHandler,
