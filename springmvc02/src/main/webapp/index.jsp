@@ -37,8 +37,8 @@
 	<a href="springmvc/testJson" id="testJson"> 测试 json </a>
 	<br/><br/>
 	
-	<!-- 测试把文件内容转换为 json 字符串  --> 
-	<form action="springmvc/testHttpMessageConverter" method="post" enctype="multipart/form-data">
+	<!-- 文件上传 --> 
+	<form action="springmvc/testFileUpload" method="post" enctype="multipart/form-data">
 		file: <input type="file" name="file" /> <br>
 		desc: <input type="text" name="desc" /> <br>
 		<input type="submit" name="submit" />

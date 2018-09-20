@@ -10,7 +10,15 @@
 <title>添加员工</title>
 </head>
 <body>
-
+	
+	<!-- 测试文件上传 --> 
+	<form action="springmvc/testFileUpload" method="post" enctype="multipart/form-data">
+		file: <input type="file" name="file" /> <br>
+		desc: <input type="text" name="desc" /> <br>
+		<input type="submit" name="submit" />
+	</form>
+	<br>
+	
 	<form action="${pageContext.request.contextPath }/springmvc/testConverter" method="POST">
 		<!-- lastName, email, gender, department.id 如 gg, gg@baidu.com， 0， 111-->
 		employee: <input type="text" name="employee"/>
