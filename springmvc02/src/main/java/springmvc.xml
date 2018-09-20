@@ -54,6 +54,20 @@
 		<property name="maxUploadSize" value="1024000"></property>
 	</bean>
 	
+	<mvc:interceptors>
+		<!-- 配置自定义的拦截器 -->
+		<bean class="com.swjtu.springmvc.interceptors.FirstInterceptor"></bean>
+		
+		<!-- <mvc:interceptor> 可以配置作用的路径，也可以配置不作用的路径  -->
+		<mvc:interceptor>
+			<mvc:mapping path="/emps"/>
+			<bean class="com.swjtu.springmvc.interceptors.SecondInterceptor"></bean>
+		</mvc:interceptor>
+		
+		<!-- 配置  LocaleChangeInterceptor -->
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"></bean>
+	</mvc:interceptors>
+	
 	<!--  
 		default-servlet-handler 将在 SpringMVC 上下文中定义一个 DefaultServletHttpRequestHandler,
 		它会对进入 DispatcherServlet 的请求进行筛查, 如果发现是没有经过映射的请求, 就将该请求交由 WEB 应用服务器默认的 
