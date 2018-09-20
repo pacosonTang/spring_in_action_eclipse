@@ -62,7 +62,7 @@
 	-->
 	
 	<br><br>
-	<a href="i18n">i18n page</a>
+	<a href="${pageContext.request.contextPath }/springmvc/i18n">i18n page</a>
 	
 	
 	

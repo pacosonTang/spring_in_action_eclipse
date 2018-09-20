@@ -14,6 +14,8 @@
 		<br/>
 		<br/>
 		
-		<a href="i18n2">i18n2 page</a>
+		<a href="${pageContext.request.contextPath }/springmvc/i18n2?locale=zh_CH">i18n2 page 中文</a>
+		
+		<a href="${pageContext.request.contextPath }/springmvc/i18n2?locale=en_US">i18n2 page 英文</a>
 </body>
 </html>

@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,23 @@ public class MySpringMvcTest {
 
 	@Autowired
 	private EmployeeDao employeeDao;
-
+	@Autowired
+	private ResourceBundleMessageSource messageSource;
+	
+	@RequestMapping("/i18n")
+	public String testI18n(Locale locale) {
+		String value = messageSource.getMessage("i18n.user", null, locale);
+		System.out.println(value);
+		return "i18n";
+	}
+	
+	@RequestMapping("/i18n2")
+	public String testI18n2(Locale locale) {
+		String value = messageSource.getMessage("i18n.password", null, locale);
+		System.out.println(value);
+		return "i18n2";
+	}
+	
 	/* 文件下载 */
 	@RequestMapping("/testResponseEntity")
 	public ResponseEntity<byte[]> testResponseEntity(HttpSession session)
