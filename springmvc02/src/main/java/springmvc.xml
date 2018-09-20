@@ -34,6 +34,8 @@
 		， 中间无需经过 handler 的方法
 	 -->
 	<mvc:view-controller path="/success" view-name="success"/>
+	<mvc:view-controller path="/i18n" view-name="i18n"/>
+	<mvc:view-controller path="/i18n2" view-name="i18n2"/>
 	
 	<!--  
 		default-servlet-handler 将在 SpringMVC 上下文中定义一个 DefaultServletHttpRequestHandler,
