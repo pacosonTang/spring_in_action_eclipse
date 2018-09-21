@@ -67,10 +67,23 @@
 	
 	<br><br>
 	<a href="${pageContext.request.contextPath }/springmvc/testExceptionHandlerExceptionResolver?i=10">
-		testExceptionHandlerExceptionResolver 测试异常处理器 
+		test ExceptionHandlerExceptionResolver 测试异常处理器 ExceptionHandlerExceptionResolver 
 	</a> 
 	
+	<br><br>
+	<a href="${pageContext.request.contextPath }/springmvc/testResponseStatusExceptionResolver?i=10">
+		test ResponseStatusExceptionResolver 测试异常处理器 ResponseStatusExceptionResolver 
+	</a> 
 	
+	<br><br>
+	<a href="${pageContext.request.contextPath }/springmvc/testDefaultHandlerExceptionResolver?i=10">
+		test DefaultHandlerExceptionResolver 测试异常处理器  DefaultHandlerExceptionResolver  
+	</a> 
+	
+	<br><br>
+	<a href="${pageContext.request.contextPath }/springmvc/testSimpleMappingExceptionResolver?i=10">
+		test SimpleMappingExceptionResolver 测试异常处理器  SimpleMappingExceptionResolver  
+	</a> 
 	
 </body>
 </html>

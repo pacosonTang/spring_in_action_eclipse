@@ -10,7 +10,7 @@
 <body>
 	<h1>Error</h1>
 	
-	${ex }
+	${requestScope.ex }
 	 
 </body>
 </html>

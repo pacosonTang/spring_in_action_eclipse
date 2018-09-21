@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -16,14 +15,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.swjtu.springmvc.dao.EmployeeDao;
 import com.swjtu.springmvc.entity.Employee;
@@ -36,8 +34,51 @@ public class MySpringMvcTest {
 	private EmployeeDao employeeDao;
 	@Autowired
 	private ResourceBundleMessageSource messageSource;
+
+	/**
+	 * 测试 SimpleMappingExceptionResolver
+	 * @return
+	 */
+	@RequestMapping(value="/testSimpleMappingExceptionResolver")
+	public String testSimpleMappingExceptionResolver(@RequestParam("i") int i) {
+		
+		String[] vals = new String[10];
+		System.out.println(vals[i]);
+		System.out.println("testSimpleMappingExceptionResolver from method. "); 
+		return "success";
+	}
 	
+	/**
+	 * 测试 DefaultHandlerExceptionResolver
+	 * @return
+	 */
+	@RequestMapping(value="/testDefaultHandlerExceptionResolver", method=RequestMethod.POST)
+	public String testDefaultHandlerExceptionResolver() {
+		
+		System.out.println("testDefaultHandlerExceptionResolver from method. "); 
+		return "success";
+	}
 	
+//	把 注解 @ResponseStatus 修饰类
+	/**
+	 *  注解 @ResponseStatus  用于修饰异常处理类或方法
+	 * @param i
+	 * @return
+	 */
+	@ResponseStatus(value=HttpStatus.FORBIDDEN, reason="用户名和密码不匹配 from method")
+	@RequestMapping("testResponseStatusExceptionResolver")
+	public String testResponseStatusExceptionResolver(@RequestParam("i") int i) {
+		if (i == 13) {
+			throw new UserNameNotMatchPasswordException();
+		}
+		System.out.println("testResponseStatusExceptionResolver"); 
+		
+		return "success";
+	}
+	
+	/**
+	 * 另外一个处理 RuntimeException 异常的方法
+	 */
 	/*@ExceptionHandler(RuntimeException.class)
 	public ModelAndView testHandleArithmeticException2(Exception ex) {
 		
