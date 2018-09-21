@@ -4,6 +4,12 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
 	id="WebApp_ID" version="2.5">
 	
+	<!-- 配置启动spring ioc 容器的listener -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:beans.xml</param-value>
+	</context-param>
+	
 	<!-- 配置 org.springframework.web.filter.HiddenHttpMethodFilter 
 	     作用： 可以吧 POST 请求转为 DELETE 或 POST 请求
 	 -->

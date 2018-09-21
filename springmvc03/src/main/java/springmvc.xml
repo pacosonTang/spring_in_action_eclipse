@@ -7,22 +7,49 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-	
-	<!-- 配置自定义扫描的包 -->
-	<context:component-scan base-package="com.swjtu.springmvc"></context:component-scan>
-	
 	<!-- 配置视图解析器, 如何把handler 方法返回值解析为实际的物理视图 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
-	
-	 
+
 	 	<mvc:default-servlet-handler/> 
 		<mvc:annotation-driven></mvc:annotation-driven> 
- 	
 	 
 	<!-- 在实际开发中，通常都需要配置 mvc:annotation-driven 标签，直接访问某个页面，不经过handler中的方法 -->
 	<!-- <mvc:annotation-driven conversion-service="conversionServiceFactoryBean"></mvc:annotation-driven> -->
 	
+	<!--  
+		需要进行 spring 整合 springmvc 吗？
+		还是否需要加入 spring 的 ioc 容器 ？ 即有两个容器： springmvc 容器 和 spring容器 。
+		是否需要在 web.xml 文件中配置启动 spring ioc 容器的 ContextLoaderListerner? 
+		
+		1、需要： 通常情况下， 类似于数据源， 事务，整合其他框架都是放在 spring的配置文件中（而不是放在 springmvc的配置文件中）；
+		实际上 放入 spring 配置文件对应的ioc 容器中的还有 service 和 dao 层。 
+		
+		2、不需要：都放在 springmvc 的配置文件中。 也可以分为多个 spring 的配置文件， 然后使用 import 节点 导入其他的配置文件 ； 
+	 -->
+	 
+	 <!-- 
+	 	问题： 若spring 的ioc 容器 和 springmvc的ioc容器 扫描的包有重合的部分， 就会导致有的bean 会被创建两次；
+	 	解决方法：
+	 	方法1、 使 spring的ioc容器扫描的包 和 springmvc 的 ioc 容器扫描的包没有重合的部分；
+	 	方法2、使用  exclude-filter  和   include-filter 子节点来规定只能扫描的注解；
+	 	方法3、
+	  -->
+	  
+	  <!-- 
+	  	springmvc 的ioc容器中的 bean 可以来引用 spring ioc容器中的 bean；
+	  	反过来呢？ 即spring ioc容器中的bean 是否可以去 引用 springmvc的ioc 容器中的bean呢 ？ 反之则不行。   
+	   -->
+	  
+	  <!-- 配置自定义扫描的包 -->
+	<context:component-scan base-package="com.swjtu.springmvc">
+		<!-- <context:exclude-filter 
+			type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+		<context:exclude-filter 
+			type="annotation" expression="org.springframework.stereotype.Controller"/> -->
+	</context:component-scan>
+	  
+	  
 </beans>
