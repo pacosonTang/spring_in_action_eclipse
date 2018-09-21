@@ -56,13 +56,13 @@
 	
 	<mvc:interceptors>
 		<!-- 配置自定义的拦截器 -->
-		<bean class="com.swjtu.springmvc.interceptors.FirstInterceptor"></bean>
+		<!-- <bean class="com.swjtu.springmvc.interceptors.FirstInterceptor"></bean> -->
 		
 		<!-- <mvc:interceptor> 可以配置作用的路径，也可以配置不作用的路径  -->
-		<mvc:interceptor>
+		<!-- <mvc:interceptor>
 			<mvc:mapping path="/emps"/>
 			<bean class="com.swjtu.springmvc.interceptors.SecondInterceptor"></bean>
-		</mvc:interceptor>
+		</mvc:interceptor> -->
 		
 		<!-- 配置  LocaleChangeInterceptor -->
 		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"></bean>

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -15,11 +16,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.swjtu.springmvc.dao.EmployeeDao;
 import com.swjtu.springmvc.entity.Employee;
@@ -32,6 +36,52 @@ public class MySpringMvcTest {
 	private EmployeeDao employeeDao;
 	@Autowired
 	private ResourceBundleMessageSource messageSource;
+	
+	
+	/*@ExceptionHandler(RuntimeException.class)
+	public ModelAndView testHandleArithmeticException2(Exception ex) {
+		
+		System.out.println("【出异常了】， " + ex);
+		ModelAndView view = new ModelAndView("error");
+		view.addObject("ex", ex);
+		return view;
+	}*/
+	
+	/**
+	 * 数学异常  ArithmeticException  处理方法
+	 * 
+	 * 【细节】
+	 * 1、在  @ExceptionHandler 方法的入参中可以加入 Exception
+	 * 类型的参数， 该参数对应发送的异常对象；
+	 * 2、@ExceptionHandler 方法的入参中不能传入map， 若希望吧异常信息传导页面上， 
+	 * 则需要使用 ModelAndBiew 作为返回值；
+	 * 3、 标记的异常有优先级的问题： ArithmeticException 和  RuntimeException 
+	 * 4、@ControllerAdvice： 如果在 当前handler中 找不到  @ExceptionHandler 方法来处理异常；
+	 * 则将去 @ControllerAdvice 标记的类中 查找 @ExceptionHandler 标记的方法来处理异常；
+	 * 
+	 * @param ex
+	 * @return
+	 */
+	/*@ExceptionHandler(ArithmeticException.class)
+	public ModelAndView testHandleArithmeticException(Exception ex) {
+		
+		System.out.println("出异常了， " + ex);
+		ModelAndView view = new ModelAndView("error");
+		view.addObject("ex", ex);
+		return view;
+	}*/
+	
+	/**
+	 * 测试 spring 抛出异常
+	 * @param i
+	 * @return
+	 */
+	@RequestMapping("/testExceptionHandlerExceptionResolver")
+	public String testExceptionHandlerExceptionResolver(@RequestParam("i") int i) {
+		
+		System.out.println("10/i = " + 10/i);
+		return "success";
+	}
 	
 	/**
 	 * 测试文件上传 

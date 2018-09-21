@@ -65,6 +65,12 @@
 	<a href="${pageContext.request.contextPath }/springmvc/i18n">i18n page</a>
 	
 	
+	<br><br>
+	<a href="${pageContext.request.contextPath }/springmvc/testExceptionHandlerExceptionResolver?i=10">
+		testExceptionHandlerExceptionResolver 测试异常处理器 
+	</a> 
+	
+	
 	
 </body>
 </html>
