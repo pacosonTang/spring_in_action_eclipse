@@ -1,0 +1,37 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+ <%
+ 	String basePath = request.getContextPath();
+ %>  
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>员工列表</title>
+    <!-- Bootstrap -->
+    <link href="<%=basePath %>/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+	<!-- 搭建页面显示 -->
+	<div class="container">
+		<!-- 标题 -->
+	  <div class="row">
+	  	<div class="col-md-12">
+			<h1>员工列表</h1>
+	  	</div>
+	  </div>
+	  <!-- 按钮 -->
+	  <div class="row"></div>
+	  <!-- 显示表格数据 -->
+	  <div class="row"></div>
+	  <!-- 显示分页信息 -->
+	  <div class="row"></div>
+	</div>
+	
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="<%=basePath %>/static/js/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="<%=basePath %>/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</body>
+</html>
