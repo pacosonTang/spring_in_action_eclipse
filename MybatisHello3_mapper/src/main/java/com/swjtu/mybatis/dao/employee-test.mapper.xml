@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.swjtu.mybatis.dao.EmployeeMapperPlus">
+
+	<!-- public Employee getEmpById(Integer id);  -->
+	<!-- 使用resultMap设置返回结果集： 通过 id 来查询emp -->
+	<select id="getEmpByIdByResultMap" resultType="map">
+		SELECT id AS ID
+		       , last_name AS LASTNAME
+		       , email AS EMAIL
+		       , gender AS GENDER
+		  FROM emp_tbl 
+		 WHERE id = #{id}
+	</select>
+
+</mapper>

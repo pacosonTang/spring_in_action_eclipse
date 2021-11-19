@@ -202,12 +202,12 @@ public class MybatisTest3 {
 		try { 
 			/* 获取sql映射对象 */
 			EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
-//			Employee e = mapper.getEmpByIdAndLastName(15, "tangrong");
+			Employee e = mapper.getEmpByIdAndLastName(15, "tangrong");
 			Map<String, Object> params = new HashMap<>(); 
 			params.put("ID", 15); 
 			params.put("LAST_NAME", "tangrong");
 			params.put("TABLE_NAME", "emp_tbl"); 
-			Employee e = mapper.getEmpByMap(params); 
+//			Employee e = mapper.getEmpByMap(params); 
 			System.out.println(e);
 		} finally { 
 			session.close();

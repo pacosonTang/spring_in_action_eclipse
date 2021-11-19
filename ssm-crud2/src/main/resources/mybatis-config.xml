@@ -3,16 +3,38 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-  	<settings>
+	<properties resource="dbconfig.properties">
+	</properties>
+	
+	<settings>
   	    <!-- 驼峰命名规则 -->
   		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<setting name="logImpl" value="LOG4J2" />
   	</settings>
   	
   	<typeAliases>
-	  <package name="com.atguigu.crud.bean" />
+	  <package name="com.swjtu.crud.bean" />
 	</typeAliases>
 	
   	<plugins>
   		<plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
   	</plugins>
+  	
+	<environments default="development">
+		<!-- 开发环境 -->
+		<environment id="development">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driver}"/>
+				<property name="url" value="${jdbc.url}"/>
+				<property name="username" value="${jdbc.username}"/>
+				<property name="password" value="${jdbc.password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="com\swjtu\crud\dao\dept.mapper.xml"/>
+	</mappers>
+  
 </configuration>

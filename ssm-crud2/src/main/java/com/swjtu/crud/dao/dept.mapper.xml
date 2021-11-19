@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.swjtu.crud.dao.dept">
+   
+  <!-- 查询部门列表 --> 
+  <select id="getDeptList" resultType="map"> 
+  	SELECT dept_id AS DEPT_ID 
+  	       , dept_name AS DEPT_NAME
+  	  FROM dept_tbl 
+  	 WHERE rcrd_id IN 
+  	      (
+  	 	    <foreach collection="LIST" item="item" separator=", ">
+  	 	      #{item} 
+  	        </foreach> 
+ 	      ) 
+  </select>
+  
+</mapper>

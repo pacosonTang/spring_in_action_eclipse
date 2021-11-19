@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+		PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<properties resource="dbconfig.properties"></properties>
+	<settings>
+		<setting name="cacheEnabled" value="false" />
+		<setting name="logImpl" value="STDOUT_LOGGING" />
+	</settings>
+
+	<environments default="mybatis">
+		<!-- 开发环境 -->
+		<environment id="mybatis">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.mybatis.driver}"/>
+				<property name="url" value="${jdbc.mybatis.url}"/>
+				<property name="username" value="${jdbc.mybatis.username}"/>
+				<property name="password" value="${jdbc.mybatis.password}"/>
+			</dataSource>
+		</environment>
+
+		<!-- st环境 -->
+		<environment id="oscasedb">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.oscasedb-st.driver}"/>
+				<property name="url" value="${jdbc.oscasedb-st.url}"/>
+				<property name="username" value="${jdbc.oscasedb-st.username}"/>
+				<property name="password" value="${jdbc.oscasedb-st.password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+</configuration>
